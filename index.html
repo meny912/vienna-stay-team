@@ -277,7 +277,7 @@ async function managerLogin(){
  catch(e){S.err=e.message||t('netErr');S.busy=false;if(String(e.message).includes('ops:nomgr'))S.hasManager=false;render()}}
 async function checkManager(){try{const st=await rpc('ops_status',{});S.hasManager=!!st.has_manager}catch(e){S.hasManager=null}render()}
 async function afterLogin(tok){S.token=tok;ls('vst_token',tok);S.busy=false;S.err='';await boot()}
-function signOutLocal(){S.token=null;S.me=null;ls('vst_token',null);stopPoll();render()}
+function signOutLocal(){S.token=null;S.me=null;REV=null;ls('vst_token',null);stopPoll();render()}
 async function logout(){try{await api('ops_logout')}catch(e){}signOutLocal()}
 
 /* ---------------- data ---------------- */
@@ -297,14 +297,33 @@ async function loadMsgs(){
  S.msgs=S.msgs.concat(n).slice(-500);S.lastMsg=n[n.length-1].id;
  if(n.some(m=>m.sys))loadIssues().then(()=>{if(S.tab==='issues'&&!$('.sheetbg'))render()}).catch(()=>{});
  return true}
-let pollT=null;
-function startPoll(){stopPoll();const tick=async()=>{
-  if(!S.token)return;
-  try{const got=await loadMsgs();if(got){if(S.tab==='chat')renderMsgs(true);else updateBadge()}}catch(e){}
-  pollT=setTimeout(tick,document.hidden?30000:(S.tab==='chat'?4000:15000))};
- pollT=setTimeout(tick,4000)}
+/* Live sync: every device asks "what changed?" every few seconds (a tiny
+   counter per area) and reloads only that area, so everyone sees the same thing. */
+let pollT=null,REV=null;
+async function syncNow(){
+ if(!S.token||!S.me)return;
+ let rev;try{rev=await api('ops_rev')||{}}catch(e){if(String(e.message).includes('ops_rev')){rev=null}else return}
+ const changed=k=>!rev||!REV||rev[k]!==REV[k];
+ const first=REV===null;REV=rev;if(first&&rev)return;
+ const jobs=[];let screen=false;
+ if(changed('msgs'))jobs.push(loadMsgs().then(g=>{if(g){if(S.tab==='chat')renderMsgs(true);updateBadge()}}));
+ if(changed('issues')){jobs.push(loadIssues(),loadUnits());screen=screen||['issues','units','reports'].includes(S.tab)}
+ if(changed('items')){jobs.push(loadItems());screen=screen||['stock','reports'].includes(S.tab);if(S.tab==='reports')S.rMoves=null}
+ if(changed('units')){jobs.push(loadUnits());screen=screen||S.tab==='units'}
+ await Promise.all(jobs).catch(()=>{});
+ updateNavBadges();
+ if(screen)safeRender()}
+/* Never yank the screen from under someone: wait while a form is open or they are typing. */
+function busyUI(){const a=document.activeElement;return !!$('.sheetbg')||!!(a&&/INPUT|TEXTAREA|SELECT/.test(a.tagName))}
+function safeRender(){if(busyUI()){S.dirty=true;return}S.dirty=false;const m=$('#main'),y=m?m.scrollTop:0;render();const m2=$('#main');if(m2)m2.scrollTop=y}
+function updateNavBadges(){const b=document.querySelector('nav button[onclick="go(\'issues\')"] .badge'),n=S.issues.filter(i=>i.status==='open').length;
+ const btn=document.querySelector('nav button[onclick="go(\'issues\')"]');if(!btn)return;
+ if(n){if(b)b.textContent=n;else btn.insertAdjacentHTML('beforeend',`<span class="badge">${n}</span>`)}else if(b)b.remove()}
+function startPoll(){stopPoll();const tick=async()=>{if(!S.token)return;await syncNow();if(S.dirty&&!busyUI())safeRender();
+  pollT=setTimeout(tick,document.hidden?30000:4000)};pollT=setTimeout(tick,1500)}
 function stopPoll(){if(pollT)clearTimeout(pollT);pollT=null}
-document.addEventListener('visibilitychange',()=>{if(!document.hidden&&S.token){startPoll();loadMsgs().then(g=>{if(g&&S.tab==='chat')renderMsgs(true);updateBadge()}).catch(()=>{})}});
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&S.token)startPoll()});
+document.addEventListener('focusout',()=>setTimeout(()=>{if(S.dirty&&!busyUI())safeRender()},300));
 
 /* ---------------- photos ---------------- */
 function pickPhoto(cam,cb){const el=cam?$('#fCam'):$('#fGal');el.value='';el.onchange=async()=>{const f=el.files[0];if(!f)return;try{cb(await shrink(f))}catch(e){toast('⚠ '+e.message)}};el.click()}
@@ -413,7 +432,7 @@ function issueCard(i){const done=i.status==='done';return `<div class="card" onc
  <div class="mute small" style="margin-top:6px">${esc(t('reportedAt'))}: ${esc(fmt(i.reported_at))} · ${esc(i.reported_by)}${done?`<br>${esc(t('handledAt'))}: ${esc(fmt(i.resolved_at))} · ${esc(i.resolved_by)} (${esc(dur(i.reported_at,i.resolved_at))})`:''}</div></div>`}
 function sheet(html){closeSheet();const bg=document.createElement('div');bg.className='sheetbg';bg.innerHTML=`<div class="sheet"><div class="grab"></div>${html}</div>`;
  bg.addEventListener('click',e=>{if(e.target===bg)closeSheet()});document.body.appendChild(bg);fillPhotos(bg);return bg}
-function closeSheet(){document.querySelectorAll('.sheetbg').forEach(x=>x.remove())}
+function closeSheet(){document.querySelectorAll('.sheetbg').forEach(x=>x.remove());if(S.dirty)setTimeout(safeRender,0)}
 function unitOptions(sel){const by={};S.units.forEach(u=>{const k=u.location||'—';(by[k]=by[k]||[]).push(u)});
  return `<option value="">${esc(t('noApt'))}</option>`+Object.keys(by).map(l=>`<optgroup label="${esc(l)}">${by[l].map(u=>`<option value="${esc(u.id)}" ${u.id===sel?'selected':''}>${esc(u.name)}</option>`).join('')}</optgroup>`).join('')}
 let issuePhoto=null;
@@ -554,7 +573,7 @@ function settingsView(){const mgr=S.me.role==='manager';return `<h2>${esc(t('lan
   <div id="mlMsg"></div><button class="btn block" style="margin-top:12px" onclick="setMgrLogin()">${esc(t('save'))}</button></div>`:''}
  <h2>📱 ${esc(t('install'))}</h2><div class="card mute">${esc(t('installHint'))}</div>
  <button class="btn red block" style="margin-top:16px" onclick="logout()">${esc(t('logout'))}</button>
- <p class="mute small" style="text-align:center;margin-top:20px">Vienna Stay Team · v3</p>`}
+ <p class="mute small" style="text-align:center;margin-top:20px">Vienna Stay Team · v4</p>`}
 async function setMgrLogin(){const u=$('#mlUser').value.trim(),p=$('#mlPass').value;
  try{await api('ops_set_manager_login',{p_user:u,p_pass:p});S.me.mgr_user=u.toLowerCase();$('#mlPass').value='';$('#mlMsg').innerHTML=`<div class="ok">${esc(t('saved'))}</div>`}
  catch(e){$('#mlMsg').innerHTML=`<div class="err">${esc(e.message)}</div>`}}
