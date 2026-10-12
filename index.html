@@ -1,0 +1,570 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#1f2a44">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="VS Team">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" href="icon-192.png">
+<title>Vienna Stay Team</title>
+<style>
+:root{--navy:#1f2a44;--navy2:#2c3a5c;--gold:#c9a24a;--bg:#f3f4f7;--card:#fff;--ink:#1d2433;--mute:#6b7385;--line:#e3e6ec;
+--red:#d64545;--redbg:#fdecec;--green:#2e9b5f;--greenbg:#e6f5ec;--amber:#c98a14;--amberbg:#fdf3dd;--chat:#e9e2d6;--mine:#dcf3d0}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans Hebrew",Arial,sans-serif;background:var(--bg);color:var(--ink);font-size:16px}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+#app{display:flex;flex-direction:column;height:100dvh;max-width:760px;margin:0 auto;background:var(--bg)}
+header{background:var(--navy);color:#fff;padding:calc(env(safe-area-inset-top) + 10px) 16px 10px;display:flex;align-items:center;gap:10px;flex-shrink:0}
+header h1{font-size:18px;margin:0;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+header .who{font-size:12px;opacity:.75}
+header .hbtn{background:rgba(255,255,255,.12);border:0;color:#fff;border-radius:10px;padding:7px 10px;font-size:14px}
+main{flex:1;overflow-y:auto;padding:14px 14px 24px;-webkit-overflow-scrolling:touch}
+nav{display:flex;background:#fff;border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom);flex-shrink:0}
+nav button{flex:1;border:0;background:none;padding:8px 2px 7px;font-size:11px;color:var(--mute);display:flex;flex-direction:column;align-items:center;gap:2px;position:relative}
+nav button .ic{font-size:21px;line-height:1}
+nav button.on{color:var(--navy);font-weight:600}
+nav button.on .ic{transform:scale(1.08)}
+.badge{position:absolute;top:3px;inset-inline-start:calc(50% + 6px);background:var(--red);color:#fff;border-radius:9px;font-size:10px;min-width:17px;height:17px;line-height:17px;padding:0 4px;font-weight:700}
+.card{background:var(--card);border-radius:14px;padding:14px;margin-bottom:10px;box-shadow:0 1px 2px rgba(20,30,50,.06)}
+.row{display:flex;align-items:center;gap:10px}
+.grow{flex:1;min-width:0}
+.mute{color:var(--mute);font-size:13px}
+.small{font-size:12px}
+h2{font-size:15px;margin:18px 4px 8px;color:var(--mute);font-weight:600;text-transform:uppercase;letter-spacing:.03em}
+h2:first-child{margin-top:4px}
+h3{margin:0 0 4px;font-size:16px}
+.btn{border:0;border-radius:12px;padding:12px 16px;font-weight:600;background:var(--navy);color:#fff;font-size:15px}
+.btn.gold{background:var(--gold);color:#1d1606}
+.btn.light{background:#eef0f4;color:var(--ink)}
+.btn.red{background:var(--red)}
+.btn.green{background:var(--green)}
+.btn.block{width:100%}
+.btn.sm{padding:8px 12px;font-size:14px;border-radius:10px}
+.btn:disabled{opacity:.5}
+.fab{position:sticky;bottom:6px;display:block;margin:14px auto 0;box-shadow:0 4px 14px rgba(31,42,68,.3)}
+label.f{display:block;font-size:13px;color:var(--mute);margin:12px 2px 5px}
+input.i,select.i,textarea.i{width:100%;border:1px solid var(--line);border-radius:11px;padding:11px 12px;background:#fff;font-size:16px}
+textarea.i{min-height:80px;resize:vertical}
+.seg{display:flex;background:#e6e9ef;border-radius:11px;padding:3px;gap:3px;margin-bottom:12px}
+.seg button{flex:1;border:0;background:none;border-radius:9px;padding:8px 4px;font-size:14px;color:var(--mute)}
+.seg button.on{background:#fff;color:var(--ink);font-weight:600;box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.pill{display:inline-block;border-radius:20px;padding:2px 9px;font-size:12px;font-weight:600;white-space:nowrap}
+.pill.red{background:var(--redbg);color:var(--red)}.pill.green{background:var(--greenbg);color:var(--green)}
+.pill.amber{background:var(--amberbg);color:var(--amber)}.pill.grey{background:#eef0f4;color:var(--mute)}
+.qty{font-size:22px;font-weight:700;min-width:48px;text-align:center}
+.qty.low{color:var(--red)}
+.item{display:flex;align-items:center;gap:10px;padding:11px 2px;border-bottom:1px solid var(--line)}
+.item:last-child{border-bottom:0}
+.list{padding:2px 12px}
+.search{position:sticky;top:-14px;background:var(--bg);padding:0 0 10px;z-index:2}
+.err{background:var(--redbg);color:var(--red);border-radius:11px;padding:10px 12px;margin:10px 0;font-size:14px}
+.ok{background:var(--greenbg);color:var(--green);border-radius:11px;padding:10px 12px;margin:10px 0;font-size:14px}
+.empty{text-align:center;color:var(--mute);padding:40px 10px}
+.langs{display:flex;gap:6px;justify-content:center;flex-wrap:wrap}
+.langs button{border:1px solid var(--line);background:#fff;border-radius:20px;padding:6px 12px;font-size:14px}
+.langs button.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.login{max-width:420px;margin:0 auto;padding-top:20px}
+.logo{text-align:center;margin:10px 0 20px}
+.logo .m{display:inline-flex;width:72px;height:72px;border-radius:20px;background:var(--navy);color:var(--gold);font-weight:800;font-size:28px;align-items:center;justify-content:center}
+.logo h1{font-size:22px;margin:12px 0 2px}
+/* chat */
+.chatwrap{display:flex;flex-direction:column;height:100%}
+#msgs{flex:1;overflow-y:auto;padding:12px 10px;background:var(--chat)}
+.msg{max-width:82%;margin:4px 0;padding:7px 10px 5px;border-radius:12px;background:#fff;box-shadow:0 1px 1px rgba(0,0,0,.08);word-wrap:break-word;white-space:pre-wrap}
+.msg.me{margin-inline-start:auto;background:var(--mine)}
+.msg .by{font-size:12px;font-weight:700;color:var(--navy2);margin-bottom:2px}
+.msg .t{font-size:11px;color:var(--mute);text-align:end;margin-top:2px}
+.msg img,.photo{display:block;max-width:100%;border-radius:9px;margin:3px 0;min-height:60px;background:#eee}
+.sysmsg{margin:8px auto;max-width:92%;background:#fff8e6;border:1px solid #f0dfae;border-radius:12px;padding:8px 11px;font-size:14px}
+.sysmsg.done{background:#eaf7ef;border-color:#bfe5cd}
+.daysep{text-align:center;margin:10px 0}
+.daysep span{background:rgba(255,255,255,.85);border-radius:8px;padding:3px 10px;font-size:12px;color:var(--mute)}
+.composer{display:flex;align-items:flex-end;gap:6px;padding:8px;background:#f0f0f0;border-top:1px solid var(--line)}
+.composer textarea{flex:1;border:0;border-radius:20px;padding:10px 14px;resize:none;max-height:120px;font-size:16px;background:#fff}
+.composer .cb{border:0;background:none;font-size:22px;padding:6px 4px;line-height:1}
+.composer .send{background:var(--green);color:#fff;border-radius:50%;width:42px;height:42px;font-size:18px;flex-shrink:0}
+.preview{display:flex;align-items:center;gap:10px;padding:8px 10px;background:#fff;border-top:1px solid var(--line)}
+.preview img{height:60px;border-radius:8px}
+/* sheet */
+.sheetbg{position:fixed;inset:0;background:rgba(10,15,30,.45);z-index:50;display:flex;align-items:flex-end;justify-content:center}
+.sheet{background:#fff;width:100%;max-width:760px;max-height:92dvh;overflow-y:auto;border-radius:18px 18px 0 0;padding:16px 16px calc(16px + env(safe-area-inset-bottom))}
+.sheet .grab{width:40px;height:5px;border-radius:3px;background:#d5d9e0;margin:-6px auto 12px}
+.acts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}
+.acts button{border:1px solid var(--line);background:#fff;border-radius:12px;padding:12px 4px;font-size:14px;display:flex;flex-direction:column;align-items:center;gap:4px}
+.acts button.on{border-color:var(--navy);background:#eef1f8;font-weight:600}
+.acts .ic{font-size:22px}
+.stepper{display:flex;align-items:center;gap:8px}
+.stepper button{width:46px;height:46px;border-radius:12px;border:1px solid var(--line);background:#fff;font-size:22px}
+.stepper input{text-align:center;font-size:20px;font-weight:700}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(80px + env(safe-area-inset-bottom));background:#222;color:#fff;padding:10px 16px;border-radius:12px;z-index:99;font-size:14px;max-width:90%}
+.big{font-size:28px;font-weight:800}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.stats .card{margin:0;text-align:center}
+table.r{width:100%;border-collapse:collapse;font-size:14px}
+table.r th,table.r td{padding:8px 6px;border-bottom:1px solid var(--line);text-align:start}
+table.r td.n,table.r th.n{text-align:center}
+.lightbox{position:fixed;inset:0;background:#000;z-index:100;display:flex;align-items:center;justify-content:center}
+.lightbox img{max-width:100%;max-height:100%}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<input type="file" id="fCam" accept="image/*" capture="environment" hidden>
+<input type="file" id="fGal" accept="image/*" hidden>
+<script>
+'use strict';
+/* The team app's OWN Supabase project — deliberately separate from the booking site. */
+const SB='https://fbaccaknjvgeucsxjsbt.supabase.co';
+const KEY='sb_publishable_7rFRtC0xjZGOCNm0DKsgqw_66DyQA_i';
+
+/* ---------------- translations ---------------- */
+const LANGS=[['he','עברית'],['de','Deutsch'],['en','English'],['ru','Русский']];
+const T={
+he:{firstMgr:'זו הפעם הראשונה: צור כאן את שם המשתמש והסיסמה של המנהל.',repeatPass:'חזור על הסיסמה',mismatch:'הסיסמאות לא זהות',createMgr:'צור מנהל והיכנס',hasMgr:'כבר קיים מנהל — היכנס עם הפרטים שלו',noMgr:'עדיין לא נוצר מנהל',mgrLogin:'שם משתמש וסיסמת מנהל',mgrLoginHint:'שם משתמש וסיסמה למנהל באפליקציה הזו. גם החשבון של הקוקפיט ימשיך לעבוד.',short8:'סיסמה קצרה מדי (לפחות 8 תווים)',app:'Vienna Stay צוות',staff:'עובד',manager:'מנהל',yourName:'השם שלך',password:'סיסמה',username:'שם משתמש',login:'כניסה',logout:'יציאה',
+chat:'צ׳אט',issues:'תקלות',stock:'מחסן',units:'דירות',reports:'דוחות',settings:'הגדרות',
+typeMsg:'כתוב הודעה…',camera:'מצלמה',gallery:'גלריה',send:'שלח',noMsgs:'אין עדיין הודעות. תהיה הראשון!',
+newIssue:'דיווח על תקלה',open:'פתוחות',done:'טופלו',all:'הכל',apartment:'דירה',noApt:'— כללי / לא בדירה —',topic:'נושא',
+whatHappened:'מה הבעיה? (בקצרה)',details:'פרטים נוספים',addPhoto:'הוסף תמונה',report:'דווח',reportedBy:'דווח ע״י',
+reportedAt:'דווח',handledAt:'טופל',handledBy:'טופל ע״י',markDone:'סמן שטופל',reopen:'פתח מחדש',handleNote:'מה נעשה? (לא חובה)',
+took:'זמן טיפול',noIssues:'אין תקלות כאן 🎉',
+take:'לקחתי',ret:'החזרתי',brk:'נשבר',add:'נקנה / נכנס',amount:'כמות',forApt:'לאיזו דירה?',note:'הערה',save:'שמור',cancel:'ביטול',
+inStock:'במחסן',min:'מינימום',low:'חסר',shopping:'צריך לקנות',buy:'לקנות',search:'חיפוש…',newItem:'פריט חדש',
+editItem:'עריכת פריט',del:'מחק',delQ:'למחוק את הפריט? ההיסטוריה שלו תישמר בדוחות.',nameIn:'שם ב',category:'קטגוריה',
+broken30:'נשברו ב-30 יום',notEnough:'אין מספיק במחסן',saved:'נשמר ✓',nothingToBuy:'הכל במלאי, אין מה לקנות 👍',
+openIssues:'תקלות פתוחות',reportHere:'דווח על תקלה בדירה הזו',noUnits:'אין דירות',
+from:'מתאריך',to:'עד תאריך',taken:'נלקח',returned:'הוחזר',broken:'נשבר',added:'נכנס',item:'פריט',history:'היסטוריה',
+csv:'הורד לאקסל (CSV)',avgFix:'זמן טיפול ממוצע',issuesOpen:'תקלות פתוחות',issuesDone:'טופלו בתקופה',moves:'תנועות',
+staffPass:'סיסמת עובדים',staffPassHint:'סיסמה אחת לכל העובדים. כל עובד כותב את השם שלו בכניסה.',newPass:'סיסמה חדשה',
+kick:'לנתק את כל העובדים (יצטרכו להיכנס מחדש)',setPass:'עדכן סיסמה',noPassYet:'עדיין לא נקבעה סיסמת עובדים — קבע אותה כאן כדי שהעובדים יוכלו להיכנס.',
+language:'שפה',install:'התקנה בטלפון',installHint:'אייפון: Safari ← כפתור שיתוף ← "הוסף למסך הבית". אנדרואיד: Chrome ← ⋮ ← "הוסף למסך הבית".',
+wrong:'סיסמה שגויה',needName:'כתוב את השם שלך',noPass:'המנהל עוד לא קבע סיסמה לעובדים',netErr:'אין חיבור. נסה שוב.',forbidden:'אין הרשאה',
+issueNew:'תקלה חדשה',issueDone:'תקלה טופלה',issueReopen:'תקלה נפתחה מחדש',view:'פתח',today:'היום',yesterday:'אתמול',
+mgrAccount:'חשבון המנהל (כמו בקוקפיט)',displayName:'השם שיוצג',sending:'שולח…',photo:'תמונה',short:'סיסמה קצרה מדי (לפחות 4)',
+kinds:{take:'לקח',break:'שבר',return:'החזיר',add:'הכניס',adjust:'תיקן ספירה'},
+icat:{kitchen:'מטבח',linen:'מצעים ומגבות',consumables:'מתכלים',cleaning:'ניקיון',other:'אחר'},
+pcat:{plumbing:'אינסטלציה / מים',electric:'חשמל ותאורה',heating:'חימום / מזגן',appliances:'מכשירי חשמל',furniture:'ריהוט ונזק',cleaning:'ניקיון',access:'כניסה / מפתחות / קוד',internet:'אינטרנט / טלוויזיה',other:'אחר'}},
+de:{firstMgr:'Zum ersten Mal: Lege hier Benutzername und Passwort des Managers an.',repeatPass:'Passwort wiederholen',mismatch:'Passwörter stimmen nicht überein',createMgr:'Manager anlegen & anmelden',hasMgr:'Es gibt schon einen Manager — bitte anmelden',noMgr:'Noch kein Manager angelegt',mgrLogin:'Manager-Anmeldung',mgrLoginHint:'Benutzername und Passwort für den Manager in dieser App. Das Cockpit-Konto funktioniert weiterhin.',short8:'Passwort zu kurz (min. 8 Zeichen)',app:'Vienna Stay Team',staff:'Mitarbeiter',manager:'Manager',yourName:'Dein Name',password:'Passwort',username:'Benutzername',login:'Anmelden',logout:'Abmelden',
+chat:'Chat',issues:'Probleme',stock:'Lager',units:'Wohnungen',reports:'Berichte',settings:'Einstellungen',
+typeMsg:'Nachricht schreiben…',camera:'Kamera',gallery:'Galerie',send:'Senden',noMsgs:'Noch keine Nachrichten.',
+newIssue:'Problem melden',open:'Offen',done:'Erledigt',all:'Alle',apartment:'Wohnung',noApt:'— Allgemein / keine Wohnung —',topic:'Thema',
+whatHappened:'Was ist das Problem? (kurz)',details:'Weitere Details',addPhoto:'Foto hinzufügen',report:'Melden',reportedBy:'Gemeldet von',
+reportedAt:'Gemeldet',handledAt:'Erledigt',handledBy:'Erledigt von',markDone:'Als erledigt markieren',reopen:'Wieder öffnen',handleNote:'Was wurde gemacht? (optional)',
+took:'Dauer',noIssues:'Keine Probleme 🎉',
+take:'Genommen',ret:'Zurück',brk:'Kaputt',add:'Eingekauft',amount:'Menge',forApt:'Für welche Wohnung?',note:'Notiz',save:'Speichern',cancel:'Abbrechen',
+inStock:'Im Lager',min:'Minimum',low:'Knapp',shopping:'Einkaufsliste',buy:'Kaufen',search:'Suchen…',newItem:'Neuer Artikel',
+editItem:'Artikel bearbeiten',del:'Löschen',delQ:'Artikel löschen? Der Verlauf bleibt in den Berichten.',nameIn:'Name auf',category:'Kategorie',
+broken30:'Kaputt (30 Tage)',notEnough:'Nicht genug im Lager',saved:'Gespeichert ✓',nothingToBuy:'Alles vorrätig 👍',
+openIssues:'Offene Probleme',reportHere:'Problem in dieser Wohnung melden',noUnits:'Keine Wohnungen',
+from:'Von',to:'Bis',taken:'Genommen',returned:'Zurück',broken:'Kaputt',added:'Eingekauft',item:'Artikel',history:'Verlauf',
+csv:'Für Excel herunterladen (CSV)',avgFix:'Ø Bearbeitungszeit',issuesOpen:'Offene Probleme',issuesDone:'Erledigt im Zeitraum',moves:'Bewegungen',
+staffPass:'Mitarbeiter-Passwort',staffPassHint:'Ein Passwort für alle Mitarbeiter. Jeder gibt beim Anmelden seinen Namen ein.',newPass:'Neues Passwort',
+kick:'Alle Mitarbeiter abmelden',setPass:'Passwort setzen',noPassYet:'Noch kein Mitarbeiter-Passwort gesetzt — bitte hier festlegen.',
+language:'Sprache',install:'Auf dem Handy installieren',installHint:'iPhone: Safari → Teilen → „Zum Home-Bildschirm“. Android: Chrome → ⋮ → „Zum Startbildschirm hinzufügen“.',
+wrong:'Falsches Passwort',needName:'Bitte Namen eingeben',noPass:'Der Manager hat noch kein Passwort gesetzt',netErr:'Keine Verbindung. Bitte erneut versuchen.',forbidden:'Keine Berechtigung',
+issueNew:'Neues Problem',issueDone:'Problem erledigt',issueReopen:'Problem wieder offen',view:'Öffnen',today:'Heute',yesterday:'Gestern',
+mgrAccount:'Manager-Konto (wie im Cockpit)',displayName:'Angezeigter Name',sending:'Senden…',photo:'Foto',short:'Passwort zu kurz (min. 4)',
+kinds:{take:'nahm',break:'kaputt',return:'zurück',add:'eingekauft',adjust:'korrigiert'},
+icat:{kitchen:'Küche',linen:'Bettwäsche & Handtücher',consumables:'Verbrauchsartikel',cleaning:'Reinigung',other:'Sonstiges'},
+pcat:{plumbing:'Sanitär / Wasser',electric:'Strom & Licht',heating:'Heizung / Klima',appliances:'Geräte',furniture:'Möbel & Schäden',cleaning:'Reinigung',access:'Zugang / Schlüssel / Code',internet:'Internet / TV',other:'Sonstiges'}},
+en:{firstMgr:'First time: create the manager username and password here.',repeatPass:'Repeat password',mismatch:'Passwords do not match',createMgr:'Create manager & sign in',hasMgr:'A manager already exists — please sign in',noMgr:'No manager created yet',mgrLogin:'Manager sign-in',mgrLoginHint:'Username and password for the manager in this app. The cockpit account keeps working too.',short8:'Password too short (min. 8 characters)',app:'Vienna Stay Team',staff:'Staff',manager:'Manager',yourName:'Your name',password:'Password',username:'Username',login:'Sign in',logout:'Sign out',
+chat:'Chat',issues:'Issues',stock:'Storage',units:'Apartments',reports:'Reports',settings:'Settings',
+typeMsg:'Type a message…',camera:'Camera',gallery:'Gallery',send:'Send',noMsgs:'No messages yet.',
+newIssue:'Report a problem',open:'Open',done:'Fixed',all:'All',apartment:'Apartment',noApt:'— General / no apartment —',topic:'Topic',
+whatHappened:'What is the problem? (short)',details:'More details',addPhoto:'Add photo',report:'Report',reportedBy:'Reported by',
+reportedAt:'Reported',handledAt:'Fixed',handledBy:'Fixed by',markDone:'Mark as fixed',reopen:'Reopen',handleNote:'What was done? (optional)',
+took:'Took',noIssues:'No issues here 🎉',
+take:'Took',ret:'Returned',brk:'Broken',add:'Bought / in',amount:'Quantity',forApt:'For which apartment?',note:'Note',save:'Save',cancel:'Cancel',
+inStock:'In storage',min:'Minimum',low:'Low',shopping:'To buy',buy:'Buy',search:'Search…',newItem:'New item',
+editItem:'Edit item',del:'Delete',delQ:'Delete this item? Its history stays in the reports.',nameIn:'Name in',category:'Category',
+broken30:'Broken (30 days)',notEnough:'Not enough in storage',saved:'Saved ✓',nothingToBuy:'Everything in stock 👍',
+openIssues:'Open issues',reportHere:'Report a problem in this apartment',noUnits:'No apartments',
+from:'From',to:'To',taken:'Taken',returned:'Returned',broken:'Broken',added:'Bought',item:'Item',history:'History',
+csv:'Download for Excel (CSV)',avgFix:'Avg. time to fix',issuesOpen:'Open issues',issuesDone:'Fixed in period',moves:'Movements',
+staffPass:'Staff password',staffPassHint:'One password for all staff. Each person types their own name when signing in.',newPass:'New password',
+kick:'Sign out all staff',setPass:'Set password',noPassYet:'No staff password yet — set it here so staff can sign in.',
+language:'Language',install:'Install on phone',installHint:'iPhone: Safari → Share → “Add to Home Screen”. Android: Chrome → ⋮ → “Add to Home screen”.',
+wrong:'Wrong password',needName:'Please type your name',noPass:'The manager has not set a staff password yet',netErr:'No connection. Try again.',forbidden:'Not allowed',
+issueNew:'New issue',issueDone:'Issue fixed',issueReopen:'Issue reopened',view:'Open',today:'Today',yesterday:'Yesterday',
+mgrAccount:'Manager account (same as the cockpit)',displayName:'Display name',sending:'Sending…',photo:'Photo',short:'Password too short (min. 4)',
+kinds:{take:'took',break:'broke',return:'returned',add:'added',adjust:'recounted'},
+icat:{kitchen:'Kitchen',linen:'Linen & towels',consumables:'Consumables',cleaning:'Cleaning',other:'Other'},
+pcat:{plumbing:'Plumbing / water',electric:'Electric & lights',heating:'Heating / AC',appliances:'Appliances',furniture:'Furniture & damage',cleaning:'Cleaning',access:'Access / keys / code',internet:'Internet / TV',other:'Other'}},
+ru:{firstMgr:'Первый запуск: создайте здесь логин и пароль менеджера.',repeatPass:'Повторите пароль',mismatch:'Пароли не совпадают',createMgr:'Создать менеджера и войти',hasMgr:'Менеджер уже существует — войдите',noMgr:'Менеджер ещё не создан',mgrLogin:'Вход менеджера',mgrLoginHint:'Логин и пароль менеджера для этого приложения. Аккаунт кокпита тоже продолжит работать.',short8:'Слишком короткий пароль (мин. 8 символов)',app:'Vienna Stay Команда',staff:'Сотрудник',manager:'Менеджер',yourName:'Ваше имя',password:'Пароль',username:'Логин',login:'Войти',logout:'Выйти',
+chat:'Чат',issues:'Проблемы',stock:'Склад',units:'Квартиры',reports:'Отчёты',settings:'Настройки',
+typeMsg:'Сообщение…',camera:'Камера',gallery:'Галерея',send:'Отправить',noMsgs:'Сообщений пока нет.',
+newIssue:'Сообщить о проблеме',open:'Открытые',done:'Решённые',all:'Все',apartment:'Квартира',noApt:'— Общее / без квартиры —',topic:'Тема',
+whatHappened:'В чём проблема? (кратко)',details:'Подробности',addPhoto:'Добавить фото',report:'Отправить',reportedBy:'Сообщил(а)',
+reportedAt:'Сообщено',handledAt:'Решено',handledBy:'Решил(а)',markDone:'Отметить как решённое',reopen:'Открыть снова',handleNote:'Что сделано? (необязательно)',
+took:'Заняло',noIssues:'Проблем нет 🎉',
+take:'Взял(а)',ret:'Вернул(а)',brk:'Разбито',add:'Куплено',amount:'Количество',forApt:'Для какой квартиры?',note:'Заметка',save:'Сохранить',cancel:'Отмена',
+inStock:'На складе',min:'Минимум',low:'Мало',shopping:'Купить',buy:'Купить',search:'Поиск…',newItem:'Новый предмет',
+editItem:'Редактировать',del:'Удалить',delQ:'Удалить предмет? История останется в отчётах.',nameIn:'Название на',category:'Категория',
+broken30:'Разбито (30 дней)',notEnough:'Недостаточно на складе',saved:'Сохранено ✓',nothingToBuy:'Всё есть 👍',
+openIssues:'Открытые проблемы',reportHere:'Сообщить о проблеме в этой квартире',noUnits:'Нет квартир',
+from:'С',to:'По',taken:'Взято',returned:'Возвращено',broken:'Разбито',added:'Куплено',item:'Предмет',history:'История',
+csv:'Скачать для Excel (CSV)',avgFix:'Среднее время решения',issuesOpen:'Открытые проблемы',issuesDone:'Решено за период',moves:'Движения',
+staffPass:'Пароль сотрудников',staffPassHint:'Один пароль для всех. Каждый вводит своё имя при входе.',newPass:'Новый пароль',
+kick:'Выйти у всех сотрудников',setPass:'Сохранить пароль',noPassYet:'Пароль сотрудников ещё не задан — задайте его здесь.',
+language:'Язык',install:'Установить на телефон',installHint:'iPhone: Safari → Поделиться → «На экран Домой». Android: Chrome → ⋮ → «Добавить на главный экран».',
+wrong:'Неверный пароль',needName:'Введите имя',noPass:'Менеджер ещё не задал пароль',netErr:'Нет связи. Попробуйте снова.',forbidden:'Нет доступа',
+issueNew:'Новая проблема',issueDone:'Проблема решена',issueReopen:'Проблема снова открыта',view:'Открыть',today:'Сегодня',yesterday:'Вчера',
+mgrAccount:'Аккаунт менеджера (как в кокпите)',displayName:'Отображаемое имя',sending:'Отправка…',photo:'Фото',short:'Слишком короткий пароль (мин. 4)',
+kinds:{take:'взял(а)',break:'разбил(а)',return:'вернул(а)',add:'добавил(а)',adjust:'пересчитал(а)'},
+icat:{kitchen:'Кухня',linen:'Бельё и полотенца',consumables:'Расходники',cleaning:'Уборка',other:'Другое'},
+pcat:{plumbing:'Сантехника / вода',electric:'Электричество и свет',heating:'Отопление / кондиционер',appliances:'Техника',furniture:'Мебель и повреждения',cleaning:'Уборка',access:'Вход / ключи / код',internet:'Интернет / ТВ',other:'Другое'}}
+};
+const ICATS=['kitchen','linen','consumables','cleaning','other'];
+const PCATS=['plumbing','electric','heating','appliances','furniture','cleaning','access','internet','other'];
+const PICON={plumbing:'🚿',electric:'💡',heating:'🔥',appliances:'🔌',furniture:'🪑',cleaning:'🧹',access:'🔑',internet:'📶',other:'❓'};
+const LOCALE={he:'he-IL',de:'de-AT',en:'en-GB',ru:'ru-RU'};
+
+/* ---------------- state ---------------- */
+function ls(k,v){try{if(v===undefined)return localStorage.getItem(k);if(v===null)localStorage.removeItem(k);else localStorage.setItem(k,v)}catch(e){return null}}
+const S={lang:ls('vst_lang')||guessLang(),token:ls('vst_token'),me:null,tab:ls('vst_tab')||'chat',
+ loginMode:'staff',err:'',busy:false,units:[],items:[],issues:[],msgs:[],lastMsg:0,seenMsg:+(ls('vst_seen')||0),
+ issueFilter:'open',issueApt:'',stockQ:'',stockShop:false,unitQ:'',pending:null,photos:{},
+ rFrom:monthStart(),rTo:isoDay(new Date()),rMoves:null};
+function guessLang(){const l=(navigator.language||'de').slice(0,2);return T[l]?l:'de'}
+function t(k){return T[S.lang][k]??T.en[k]??k}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function isoDay(d){const z=new Date(d.getTime()-d.getTimezoneOffset()*6e4);return z.toISOString().slice(0,10)}
+function monthStart(){const d=new Date();return isoDay(new Date(d.getFullYear(),d.getMonth(),1))}
+function fmt(ts,opt){if(!ts)return'';return new Intl.DateTimeFormat(LOCALE[S.lang],opt||{day:'2-digit',month:'2-digit',year:'2-digit',hour:'2-digit',minute:'2-digit'}).format(new Date(ts))}
+function hm(ts){return fmt(ts,{hour:'2-digit',minute:'2-digit'})}
+function dur(a,b){let m=Math.max(0,Math.round((new Date(b)-new Date(a))/6e4));if(m<60)return m+' min';let h=Math.round(m/6)/10;if(h<48)return h+' h';return Math.round(h/24*10)/10+' d'}
+function itemName(i){return i['name_'+S.lang]||i.name_en||i.name_de||i.name_he||i.name_ru||'#'+i.id}
+function unitById(id){return S.units.find(u=>u.id===id)}
+function unitLabel(id){const u=unitById(id);return u?u.name:(id||'')}
+function toast(m){const d=document.createElement('div');d.className='toast';d.textContent=m;document.body.appendChild(d);setTimeout(()=>d.remove(),2200)}
+const $=s=>document.querySelector(s);
+
+/* ---------------- api ---------------- */
+async function rpc(fn,args,jwt){
+ let r;
+ try{const h={apikey:KEY,'Content-Type':'application/json'};if(jwt||KEY.startsWith('eyJ'))h.Authorization='Bearer '+(jwt||KEY);
+  r=await fetch(SB+'/rest/v1/rpc/'+fn,{method:'POST',headers:h,body:JSON.stringify(args||{})})}
+ catch(e){throw new Error(t('netErr'))}
+ const txt=await r.text();let d=null;try{d=txt?JSON.parse(txt):null}catch(e){}
+ if(!r.ok){const m=(d&&(d.message||d.hint))||txt||'';
+  if(m.includes('ops:auth')){signOutLocal();throw new Error('')}
+  const map={'ops:badpass':'wrong','ops:name':'needName','ops:nopass':'noPass','ops:forbidden':'forbidden','ops:notenough':'notEnough','ops:short':'short','ops:short8':'short8','ops:hasmgr':'hasMgr','ops:nomgr':'noMgr'};
+  const k=Object.keys(map).find(x=>m.includes(x));throw new Error(k?t(map[k]):(m||t('netErr')))}
+ return d}
+const api=(fn,args)=>rpc(fn,Object.assign({p_token:S.token},args||{}));
+
+/* ---------------- auth ---------------- */
+async function staffLogin(){
+ const name=$('#lName').value.trim(),pass=$('#lPass').value;ls('vst_name',name);
+ if(!name){S.err=t('needName');render();return}
+ S.busy=true;S.err='';render();
+ try{const tok=await rpc('ops_staff_login',{p_name:name,p_pass:pass});ls('vst_name',name);await afterLogin(tok)}
+ catch(e){S.err=e.message;S.busy=false;render()}}
+async function managerLogin(){
+ const u=$('#mUser').value.trim(),pass=$('#mPass').value,dn=$('#mName').value.trim()||'Manager';S.mUser=u;S.mName=$('#mName').value;
+ const setup=S.hasManager===false;
+ if(setup&&pass!==$('#mPass2').value){S.err=t('mismatch');render();return}
+ S.busy=true;S.err='';render();
+ try{const tok=setup?await rpc('ops_manager_setup',{p_user:u,p_pass:pass,p_name:dn}):await rpc('ops_manager_pass_login',{p_user:u,p_pass:pass,p_name:dn});
+  ls('vst_mname',dn);await afterLogin(tok)}
+ catch(e){S.err=e.message||t('netErr');S.busy=false;if(String(e.message).includes('ops:nomgr'))S.hasManager=false;render()}}
+async function checkManager(){try{const st=await rpc('ops_status',{});S.hasManager=!!st.has_manager}catch(e){S.hasManager=null}render()}
+async function afterLogin(tok){S.token=tok;ls('vst_token',tok);S.busy=false;S.err='';await boot()}
+function signOutLocal(){S.token=null;S.me=null;ls('vst_token',null);stopPoll();render()}
+async function logout(){try{await api('ops_logout')}catch(e){}signOutLocal()}
+
+/* ---------------- data ---------------- */
+async function boot(){
+ if(!S.token){render();return}
+ try{S.me=await api('ops_me')}catch(e){S.bootErr=e.message;render();return}
+ if(S.me.role!=='manager'&&(S.tab==='reports'))S.tab='chat';
+ render();
+ await Promise.all([loadUnits(),loadItems(),loadIssues(),loadMsgs()]).catch(e=>e.message&&toast(e.message));
+ render();startPoll()}
+async function loadUnits(){S.units=await api('ops_units')||[]}
+async function loadItems(){S.items=await api('ops_items')||[]}
+async function loadIssues(){S.issues=await api('ops_issues_list')||[]}
+async function loadMsgs(){
+ const n=await api('ops_msgs',{p_after:S.lastMsg})||[];
+ if(!n.length)return false;
+ S.msgs=S.msgs.concat(n).slice(-500);S.lastMsg=n[n.length-1].id;
+ if(n.some(m=>m.sys))loadIssues().then(()=>{if(S.tab==='issues'&&!$('.sheetbg'))render()}).catch(()=>{});
+ return true}
+let pollT=null;
+function startPoll(){stopPoll();const tick=async()=>{
+  if(!S.token)return;
+  try{const got=await loadMsgs();if(got){if(S.tab==='chat')renderMsgs(true);else updateBadge()}}catch(e){}
+  pollT=setTimeout(tick,document.hidden?30000:(S.tab==='chat'?4000:15000))};
+ pollT=setTimeout(tick,4000)}
+function stopPoll(){if(pollT)clearTimeout(pollT);pollT=null}
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&S.token){startPoll();loadMsgs().then(g=>{if(g&&S.tab==='chat')renderMsgs(true);updateBadge()}).catch(()=>{})}});
+
+/* ---------------- photos ---------------- */
+function pickPhoto(cam,cb){const el=cam?$('#fCam'):$('#fGal');el.value='';el.onchange=async()=>{const f=el.files[0];if(!f)return;try{cb(await shrink(f))}catch(e){toast('⚠ '+e.message)}};el.click()}
+function shrink(file){return new Promise((res,rej)=>{const url=URL.createObjectURL(file);const img=new Image();
+ img.onload=()=>{const max=1280;let w=img.naturalWidth,h=img.naturalHeight;const k=Math.min(1,max/Math.max(w,h));w=Math.round(w*k);h=Math.round(h*k);
+  const c=document.createElement('canvas');c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);URL.revokeObjectURL(url);
+  const du=c.toDataURL('image/jpeg',.72);res({mime:'image/jpeg',data:du.split(',')[1],url:du})};
+ img.onerror=()=>{URL.revokeObjectURL(url);rej(new Error('image'))};img.src=url})}
+async function uploadPhoto(p){return api('ops_photo_put',{p_mime:p.mime,p_data:p.data})}
+async function fillPhotos(root){
+ (root||document).querySelectorAll('img[data-pid]').forEach(async el=>{
+  const id=el.dataset.pid;if(S.photos[id]){el.src=S.photos[id];return}
+  try{const d=await api('ops_photo_get',{p_id:id});if(d){S.photos[id]='data:'+d.mime+';base64,'+d.data;document.querySelectorAll('img[data-pid="'+id+'"]').forEach(x=>x.src=S.photos[id])}}catch(e){}})}
+function photoTag(id){return id?`<img class="photo" data-pid="${esc(id)}" alt="" onclick="zoom(this.src)">`:''}
+function zoom(src){if(!src||src.startsWith('data:,'))return;const d=document.createElement('div');d.className='lightbox';d.innerHTML=`<img src="${src}">`;d.onclick=()=>d.remove();document.body.appendChild(d)}
+
+/* ---------------- render ---------------- */
+function render(){
+ document.documentElement.lang=S.lang;document.documentElement.dir=S.lang==='he'?'rtl':'ltr';
+ const app=$('#app');
+ if(!S.token||!S.me){app.innerHTML=S.token?`<main><div class="empty">${S.bootErr?esc(S.bootErr)+'<br><br><button class="btn" onclick="S.bootErr=\'\';render();boot()">↻</button>':'…'}</div></main>`:loginView();return}
+ const tabs=[['chat','💬'],['issues','🛠️'],['stock','📦'],['units','🏢']];
+ if(S.me.role==='manager')tabs.push(['reports','📊']);
+ tabs.push(['settings','⚙️']);
+ const openCount=S.issues.filter(i=>i.status==='open').length;
+ app.innerHTML=`<header><h1>${esc(t(S.tab))}</h1><div class="who">${esc(S.me.name)}${S.me.role==='manager'?' · '+esc(t('manager')):''}</div></header>
+ <main id="main" ${S.tab==='chat'?'style="padding:0;overflow:hidden"':''}>${view()}</main>
+ <nav>${tabs.map(([k,ic])=>`<button class="${S.tab===k?'on':''}" onclick="go('${k}')"><span class="ic">${ic}</span>${esc(t(k))}${
+   k==='chat'?'<span class="badge" id="chatBadge" hidden></span>':''}${k==='issues'&&openCount?`<span class="badge">${openCount}</span>`:''}</button>`).join('')}</nav>`;
+ if(S.tab==='chat')renderMsgs(false);
+ updateBadge();fillPhotos($('#main'))}
+function go(k){S.tab=k;ls('vst_tab',k);if(k==='reports')S.rMoves=null;render();$('#main')&&($('#main').scrollTop=0);if(k==='chat')startPoll()}
+function view(){return({chat:chatView,issues:issuesView,stock:stockView,units:unitsView,reports:reportsView,settings:settingsView}[S.tab]||chatView)()}
+function langBar(){return `<div class="langs">${LANGS.map(([k,n])=>`<button class="${S.lang===k?'on':''}" onclick="setLang('${k}')">${n}</button>`).join('')}</div>`}
+function setLang(k){S.lang=k;ls('vst_lang',k);render()}
+
+function loginView(){const st=S.loginMode==='staff';return `<main><div class="login">
+ ${langBar()}
+ <div class="logo"><div class="m">VS</div><h1>${esc(t('app'))}</h1><div class="mute">Vienna Stay Apartments</div></div>
+ <div class="seg"><button class="${st?'on':''}" onclick="S.loginMode='staff';S.err='';render()">${esc(t('staff'))}</button><button class="${st?'':'on'}" onclick="S.loginMode='manager';S.err='';render();checkManager()">${esc(t('manager'))}</button></div>
+ <div class="card">${st?`
+  <label class="f">${esc(t('yourName'))}</label><input class="i" id="lName" autocomplete="name" value="${esc(ls('vst_name')||'')}">
+  <label class="f">${esc(t('password'))}</label><input class="i" id="lPass" type="password" autocomplete="current-password" onkeydown="if(event.key==='Enter')staffLogin()">
+  ${S.err?`<div class="err">${esc(S.err)}</div>`:''}
+  <button class="btn block" style="margin-top:16px" ${S.busy?'disabled':''} onclick="staffLogin()">${esc(t('login'))}</button>`:`
+  ${S.hasManager===false?`<div class="ok">${esc(t('firstMgr'))}</div>`:''}
+  <label class="f">${esc(t('username'))}</label><input class="i" id="mUser" autocapitalize="none" autocomplete="username" value="${esc(S.mUser||'')}">
+  <label class="f">${esc(t('password'))}</label><input class="i" id="mPass" type="password" autocomplete="${S.hasManager===false?'new-password':'current-password'}">
+  ${S.hasManager===false?`<label class="f">${esc(t('repeatPass'))}</label><input class="i" id="mPass2" type="password" autocomplete="new-password">`:''}
+  <label class="f">${esc(t('displayName'))}</label><input class="i" id="mName" value="${esc(S.mName??ls('vst_mname')??'')}" placeholder="Manager" onkeydown="if(event.key==='Enter')managerLogin()">
+  ${S.err?`<div class="err">${esc(S.err)}</div>`:''}
+  <button class="btn block" style="margin-top:16px" ${S.busy?'disabled':''} onclick="managerLogin()">${esc(t(S.hasManager===false?'createMgr':'login'))}</button>`}
+ </div><p class="mute small" style="text-align:center">${esc(t('installHint'))}</p></div></main>`}
+
+/* ---------------- chat ---------------- */
+function chatView(){return `<div class="chatwrap"><div id="msgs"></div>
+ <div id="chatPrev"></div>
+ <div class="composer">
+  <button class="cb" title="${esc(t('camera'))}" onclick="pickPhoto(true,setChatPhoto)">📷</button>
+  <button class="cb" title="${esc(t('gallery'))}" onclick="pickPhoto(false,setChatPhoto)">🖼️</button>
+  <textarea id="chatIn" rows="1" placeholder="${esc(t('typeMsg'))}" oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,120)+'px'"></textarea>
+  <button class="cb send" onclick="sendMsg()">➤</button></div></div>`}
+function setChatPhoto(p){S.pending=p;const el=$('#chatPrev');if(el)el.innerHTML=`<div class="preview"><img src="${p.url}"><div class="grow mute">${esc(t('photo'))}</div><button class="btn light sm" onclick="S.pending=null;$('#chatPrev').innerHTML=''">✕</button></div>`}
+function renderMsgs(onlyNew){
+ const box=$('#msgs');if(!box)return;
+ const nearBottom=box.scrollHeight-box.scrollTop-box.clientHeight<120;
+ if(!S.msgs.length){box.innerHTML=`<div class="empty">${esc(t('noMsgs'))}</div>`;return}
+ let html='',lastDay='';const me=S.me.name;
+ const today=isoDay(new Date()),yest=isoDay(new Date(Date.now()-864e5));
+ for(const m of S.msgs){const d=isoDay(new Date(m.at));
+  if(d!==lastDay){lastDay=d;html+=`<div class="daysep"><span>${d===today?t('today'):d===yest?t('yesterday'):esc(fmt(m.at,{weekday:'short',day:'numeric',month:'long'}))}</span></div>`}
+  if(m.sys){const iss=S.issues.find(i=>i.id===m.issue_id);const lbl={issue_new:'🛠️ '+t('issueNew'),issue_done:'✅ '+t('issueDone'),issue_reopen:'↩️ '+t('issueReopen')}[m.sys];
+   html+=`<div class="sysmsg ${m.sys==='issue_done'?'done':''}"><b>${esc(lbl)}</b> · ${esc(m.by_name)} · ${esc(hm(m.at))}<br>${esc(m.body)}${iss&&iss.unit_id?` — <span class="mute">${esc(unitLabel(iss.unit_id))}</span>`:''}
+   ${photoTag(m.photo_id)}${m.issue_id?`<div style="margin-top:6px"><button class="btn light sm" onclick="openIssue(${m.issue_id})">${esc(t('view'))}</button></div>`:''}</div>`;continue}
+  const mine=m.by_name===me;
+  html+=`<div class="msg ${mine?'me':''}">${mine?'':`<div class="by">${esc(m.by_name)}</div>`}${photoTag(m.photo_id)}${m.body?esc(m.body):''}<div class="t">${esc(hm(m.at))}</div></div>`}
+ box.innerHTML=html;fillPhotos(box);
+ if(!onlyNew||nearBottom)box.scrollTop=box.scrollHeight;
+ markSeen()}
+function markSeen(){if(S.tab==='chat'&&S.lastMsg){S.seenMsg=S.lastMsg;ls('vst_seen',String(S.lastMsg))}updateBadge()}
+function updateBadge(){const b=$('#chatBadge');if(!b)return;const n=S.msgs.filter(m=>m.id>S.seenMsg&&m.by_name!==S.me.name).length;b.hidden=!n||S.tab==='chat';b.textContent=n>99?'99+':n}
+async function sendMsg(){
+ const inp=$('#chatIn');const body=inp.value.trim();const p=S.pending;
+ if(!body&&!p)return;
+ inp.disabled=true;
+ try{let pid=null;if(p)pid=await uploadPhoto(p);if(p)S.photos[pid]=p.url;
+  await api('ops_msg_send',{p_body:body,p_photo:pid});
+  inp.value='';inp.style.height='auto';S.pending=null;$('#chatPrev').innerHTML='';
+  await loadMsgs();renderMsgs(false)}
+ catch(e){e.message&&toast(e.message)}
+ inp.disabled=false;inp.focus()}
+
+/* ---------------- issues ---------------- */
+function issuesView(){
+ const f=S.issueFilter;let list=S.issues.filter(i=>f==='all'||i.status===f);
+ if(S.issueApt)list=list.filter(i=>i.unit_id===S.issueApt);
+ const groups={};list.forEach(i=>{(groups[i.category]=groups[i.category]||[]).push(i)});
+ const cnt=k=>S.issues.filter(i=>(k==='all'||i.status===k)&&(!S.issueApt||i.unit_id===S.issueApt)).length;
+ return `<div class="seg">${['open','done','all'].map(k=>`<button class="${f===k?'on':''}" onclick="S.issueFilter='${k}';render()">${esc(t(k))} (${cnt(k)})</button>`).join('')}</div>
+ ${S.issueApt?`<div class="card row"><div class="grow">🏢 <b>${esc(unitLabel(S.issueApt))}</b></div><button class="btn light sm" onclick="S.issueApt='';render()">✕</button></div>`:''}
+ ${list.length?PCATS.filter(c=>groups[c]).map(c=>`<h2>${PICON[c]} ${esc(t('pcat')[c])} · ${groups[c].length}</h2>${groups[c].map(issueCard).join('')}`).join(''):`<div class="empty">${esc(t('noIssues'))}</div>`}
+ <button class="btn gold fab" onclick="newIssue(S.issueApt)">＋ ${esc(t('newIssue'))}</button>`}
+function issueCard(i){const done=i.status==='done';return `<div class="card" onclick="openIssue(${i.id})">
+ <div class="row"><div class="grow"><h3>${esc(i.title)}</h3><div class="mute">${i.unit_id?'🏢 '+esc(i.unit_name||i.unit_id):esc(t('noApt'))}</div></div>
+ <span class="pill ${done?'green':'red'}">${esc(t(done?'done':'open'))}</span></div>
+ <div class="mute small" style="margin-top:6px">${esc(t('reportedAt'))}: ${esc(fmt(i.reported_at))} · ${esc(i.reported_by)}${done?`<br>${esc(t('handledAt'))}: ${esc(fmt(i.resolved_at))} · ${esc(i.resolved_by)} (${esc(dur(i.reported_at,i.resolved_at))})`:''}</div></div>`}
+function sheet(html){closeSheet();const bg=document.createElement('div');bg.className='sheetbg';bg.innerHTML=`<div class="sheet"><div class="grab"></div>${html}</div>`;
+ bg.addEventListener('click',e=>{if(e.target===bg)closeSheet()});document.body.appendChild(bg);fillPhotos(bg);return bg}
+function closeSheet(){document.querySelectorAll('.sheetbg').forEach(x=>x.remove())}
+function unitOptions(sel){const by={};S.units.forEach(u=>{const k=u.location||'—';(by[k]=by[k]||[]).push(u)});
+ return `<option value="">${esc(t('noApt'))}</option>`+Object.keys(by).map(l=>`<optgroup label="${esc(l)}">${by[l].map(u=>`<option value="${esc(u.id)}" ${u.id===sel?'selected':''}>${esc(u.name)}</option>`).join('')}</optgroup>`).join('')}
+let issuePhoto=null;
+function newIssue(apt){issuePhoto=null;sheet(`<h3>${esc(t('newIssue'))}</h3>
+ <label class="f">${esc(t('apartment'))}</label><select class="i" id="niApt">${unitOptions(apt||'')}</select>
+ <label class="f">${esc(t('topic'))}</label><select class="i" id="niCat">${PCATS.map(c=>`<option value="${c}">${PICON[c]} ${esc(t('pcat')[c])}</option>`).join('')}</select>
+ <label class="f">${esc(t('whatHappened'))}</label><input class="i" id="niTitle" maxlength="200">
+ <label class="f">${esc(t('details'))}</label><textarea class="i" id="niDet"></textarea>
+ <div id="niPrev"></div>
+ <div class="row" style="margin-top:10px"><button class="btn light sm" onclick="pickPhoto(true,setIssuePhoto)">📷 ${esc(t('camera'))}</button><button class="btn light sm" onclick="pickPhoto(false,setIssuePhoto)">🖼️ ${esc(t('gallery'))}</button></div>
+ <div id="niErr"></div>
+ <div class="row" style="margin-top:16px"><button class="btn light grow" onclick="closeSheet()">${esc(t('cancel'))}</button><button class="btn gold grow" id="niGo" onclick="submitIssue()">${esc(t('report'))}</button></div>`)}
+function setIssuePhoto(p){issuePhoto=p;$('#niPrev').innerHTML=`<div class="preview" style="padding:8px 0"><img src="${p.url}"><button class="btn light sm" onclick="issuePhoto=null;$('#niPrev').innerHTML=''">✕</button></div>`}
+async function submitIssue(){const title=$('#niTitle').value.trim();if(!title){$('#niTitle').focus();return}
+ const b=$('#niGo');b.disabled=true;b.textContent=t('sending');
+ try{let pid=null;if(issuePhoto){pid=await uploadPhoto(issuePhoto);S.photos[pid]=issuePhoto.url}
+  await api('ops_issue_new',{p_unit:$('#niApt').value,p_cat:$('#niCat').value,p_title:title,p_details:$('#niDet').value.trim(),p_photo:pid});
+  closeSheet();toast(t('saved'));await Promise.all([loadIssues(),loadMsgs(),loadUnits()]);S.issueFilter='open';render()}
+ catch(e){$('#niErr').innerHTML=`<div class="err">${esc(e.message)}</div>`;b.disabled=false;b.textContent=t('report')}}
+function openIssue(id){const i=S.issues.find(x=>x.id===id);if(!i){toast('…');return}const done=i.status==='done';
+ sheet(`<div class="row"><div class="grow"><span class="pill grey">${PICON[i.category]||''} ${esc(t('pcat')[i.category]||i.category)}</span></div><span class="pill ${done?'green':'red'}">${esc(t(done?'done':'open'))}</span></div>
+ <h3 style="margin-top:10px">${esc(i.title)}</h3>
+ <div class="mute">${i.unit_id?'🏢 '+esc(i.unit_name||i.unit_id)+(i.unit_location?' · '+esc(i.unit_location):''):esc(t('noApt'))}</div>
+ ${i.details?`<p style="white-space:pre-wrap">${esc(i.details)}</p>`:''}${photoTag(i.photo_id)}
+ <div class="card" style="background:#f6f7fa;margin-top:12px">
+  <div>🕓 <b>${esc(t('reportedAt'))}:</b> ${esc(fmt(i.reported_at))}</div><div class="mute">${esc(t('reportedBy'))}: ${esc(i.reported_by)}</div>
+  ${done?`<div style="margin-top:8px">✅ <b>${esc(t('handledAt'))}:</b> ${esc(fmt(i.resolved_at))}</div><div class="mute">${esc(t('handledBy'))}: ${esc(i.resolved_by)} · ${esc(t('took'))}: ${esc(dur(i.reported_at,i.resolved_at))}</div>${i.resolution_note?`<p style="white-space:pre-wrap;margin:6px 0 0">${esc(i.resolution_note)}</p>`:''}`:''}
+ </div>
+ ${done?`<button class="btn light block" onclick="setIssue(${i.id},false)">↩️ ${esc(t('reopen'))}</button>`:
+ `<label class="f">${esc(t('handleNote'))}</label><textarea class="i" id="isNote"></textarea><button class="btn green block" style="margin-top:12px" onclick="setIssue(${i.id},true)">✅ ${esc(t('markDone'))}</button>`}`)}
+async function setIssue(id,done){const n=$('#isNote');
+ try{await api('ops_issue_set',{p_id:id,p_done:done,p_note:n?n.value.trim():''});closeSheet();toast(t('saved'));await Promise.all([loadIssues(),loadMsgs(),loadUnits()]);render()}
+ catch(e){e.message&&toast(e.message)}}
+
+/* ---------------- storage ---------------- */
+function stockView(){const mgr=S.me.role==='manager';const q=S.stockQ.toLowerCase();
+ let items=S.items.filter(i=>!q||[i.name_he,i.name_de,i.name_en,i.name_ru].some(n=>(n||'').toLowerCase().includes(q)));
+ const shop=S.items.filter(i=>i.qty<i.min_qty);
+ if(S.stockShop)items=items.filter(i=>i.qty<i.min_qty);
+ const by={};items.forEach(i=>{(by[i.category]=by[i.category]||[]).push(i)});
+ return `<div class="search"><input class="i" placeholder="${esc(t('search'))}" value="${esc(S.stockQ)}" oninput="S.stockQ=this.value;clearTimeout(window._sq);window._sq=setTimeout(()=>{render();const x=$('.search input');x.focus();x.setSelectionRange(x.value.length,x.value.length)},250)"></div>
+ <div class="seg"><button class="${S.stockShop?'':'on'}" onclick="S.stockShop=false;render()">📦 ${esc(t('all'))} (${S.items.length})</button><button class="${S.stockShop?'on':''}" onclick="S.stockShop=true;render()">🛒 ${esc(t('shopping'))} (${shop.length})</button></div>
+ ${S.stockShop&&!items.length?`<div class="empty">${esc(t('nothingToBuy'))}</div>`:''}
+ ${ICATS.filter(c=>by[c]).map(c=>`<h2>${esc(t('icat')[c])}</h2><div class="card list">${by[c].map(i=>{const low=i.qty<i.min_qty;return `<div class="item" onclick="itemSheet(${i.id})">
+  <div class="grow"><div><b>${esc(itemName(i))}</b></div><div class="mute small">${esc(t('min'))}: ${i.min_qty}${i.broken_30d?` · 💔 ${i.broken_30d}`:''}${low?` · <span class="pill red">${esc(t('buy'))} ${i.min_qty-i.qty}</span>`:''}</div></div>
+  <div class="qty ${low?'low':''}">${i.qty}</div></div>`}).join('')}</div>`).join('')}
+ ${mgr?`<button class="btn gold fab" onclick="editItem()">＋ ${esc(t('newItem'))}</button>`:''}`}
+let mv={kind:'take',qty:1};
+function itemSheet(id){const i=S.items.find(x=>x.id===id);if(!i)return;const mgr=S.me.role==='manager';mv={kind:'take',qty:1,id};
+ const acts=[['take','📤',t('take')],['return','📥',t('ret')],['break','💔',t('brk')]];if(mgr)acts.push(['add','🛒',t('add')]);
+ sheet(`<div class="row"><div class="grow"><h3>${esc(itemName(i))}</h3><div class="mute">${esc(t('inStock'))}: <b>${i.qty}</b> · ${esc(t('min'))}: ${i.min_qty}</div></div>
+  ${mgr?`<button class="btn light sm" onclick="editItem(${i.id})">✏️</button>`:''}</div>
+ <div class="acts" style="grid-template-columns:repeat(${acts.length},1fr)">${acts.map(([k,ic,l])=>`<button class="${k==='take'?'on':''}" data-k="${k}" onclick="mv.kind='${k}';document.querySelectorAll('.acts button').forEach(b=>b.classList.toggle('on',b.dataset.k==='${k}'));$('#mvAptW').hidden=('${k}'==='add')"><span class="ic">${ic}</span>${esc(l)}</button>`).join('')}</div>
+ <label class="f">${esc(t('amount'))}</label>
+ <div class="stepper"><button onclick="stepQ(-1)">−</button><input class="i" id="mvQ" type="number" inputmode="numeric" min="1" value="1"><button onclick="stepQ(1)">＋</button></div>
+ <div id="mvAptW"><label class="f">${esc(t('forApt'))}</label><select class="i" id="mvApt">${unitOptions(ls('vst_lastApt')||'')}</select></div>
+ <label class="f">${esc(t('note'))}</label><input class="i" id="mvNote">
+ <div id="mvErr"></div>
+ <div class="row" style="margin-top:16px"><button class="btn light grow" onclick="closeSheet()">${esc(t('cancel'))}</button><button class="btn grow" id="mvGo" onclick="doMove()">${esc(t('save'))}</button></div>`)}
+function stepQ(d){const el=$('#mvQ');el.value=Math.max(1,(+el.value||0)+d)}
+async function doMove(){const qty=Math.round(+$('#mvQ').value);if(!(qty>0))return;const apt=mv.kind==='add'?'':$('#mvApt').value;
+ const b=$('#mvGo');b.disabled=true;
+ try{await api('ops_move',{p_item:mv.id,p_kind:mv.kind,p_qty:qty,p_unit:apt,p_note:$('#mvNote').value.trim()});if(apt)ls('vst_lastApt',apt);
+  closeSheet();toast(t('saved'));await loadItems();render()}
+ catch(e){$('#mvErr').innerHTML=`<div class="err">${esc(e.message)}</div>`;b.disabled=false}}
+function editItem(id){const i=id?S.items.find(x=>x.id===id):{name_he:'',name_de:'',name_en:'',name_ru:'',category:'kitchen',qty:0,min_qty:0};
+ sheet(`<h3>${esc(t(id?'editItem':'newItem'))}</h3>
+ ${LANGS.map(([k,n])=>`<label class="f">${esc(t('nameIn'))} ${n}</label><input class="i" id="it_${k}" value="${esc(i['name_'+k]||'')}" dir="${k==='he'?'rtl':'ltr'}">`).join('')}
+ <label class="f">${esc(t('category'))}</label><select class="i" id="itCat">${ICATS.map(c=>`<option value="${c}" ${i.category===c?'selected':''}>${esc(t('icat')[c])}</option>`).join('')}</select>
+ <div class="row"><div class="grow"><label class="f">${esc(t('inStock'))}</label><input class="i" id="itQty" type="number" inputmode="numeric" value="${i.qty}"></div>
+ <div class="grow"><label class="f">${esc(t('min'))}</label><input class="i" id="itMin" type="number" inputmode="numeric" value="${i.min_qty}"></div></div>
+ <div id="itErr"></div>
+ <div class="row" style="margin-top:16px">${id?`<button class="btn red sm" onclick="delItem(${id})">🗑 ${esc(t('del'))}</button>`:''}<button class="btn light grow" onclick="closeSheet()">${esc(t('cancel'))}</button><button class="btn grow" onclick="saveItem(${id||0})">${esc(t('save'))}</button></div>`)}
+async function saveItem(id){const p={category:$('#itCat').value,qty:Math.max(0,Math.round(+$('#itQty').value||0)),min_qty:Math.max(0,Math.round(+$('#itMin').value||0))};
+ LANGS.forEach(([k])=>p['name_'+k]=$('#it_'+k).value.trim()||null);if(id)p.id=id;
+ if(!LANGS.some(([k])=>p['name_'+k])){$('#it_'+S.lang).focus();return}
+ try{await api('ops_item_save',{p});closeSheet();toast(t('saved'));await loadItems();render()}catch(e){$('#itErr').innerHTML=`<div class="err">${esc(e.message)}</div>`}}
+async function delItem(id){if(!confirm(t('delQ')))return;try{await api('ops_item_delete',{p_id:id});closeSheet();await loadItems();render()}catch(e){toast(e.message)}}
+
+/* ---------------- apartments ---------------- */
+function unitsView(){const q=S.unitQ.toLowerCase();const by={};
+ S.units.filter(u=>!q||(u.name||'').toLowerCase().includes(q)||(u.location||'').toLowerCase().includes(q)).forEach(u=>{const k=u.location||'—';(by[k]=by[k]||[]).push(u)});
+ const keys=Object.keys(by);
+ return `<div class="search"><input class="i" placeholder="${esc(t('search'))}" value="${esc(S.unitQ)}" oninput="S.unitQ=this.value;clearTimeout(window._uq);window._uq=setTimeout(()=>{render();const x=$('.search input');x.focus();x.setSelectionRange(x.value.length,x.value.length)},250)"></div>
+ ${keys.length?keys.map(l=>`<h2>📍 ${esc(l)} · ${by[l].length}</h2><div class="card list">${by[l].map(u=>`<div class="item" onclick="unitSheet('${esc(u.id)}')">
+  <div style="font-size:20px">${u.kind==='garage'?'🚗':'🏠'}</div><div class="grow"><b>${esc(u.name)}</b>${u.max_guests?`<div class="mute small">👤 ${u.max_guests}</div>`:''}</div>
+  ${u.open_issues?`<span class="pill red">🛠️ ${u.open_issues}</span>`:''}</div>`).join('')}</div>`).join(''):`<div class="empty">${esc(t('noUnits'))}</div>`}`}
+function unitSheet(id){const u=unitById(id);if(!u)return;const open=S.issues.filter(i=>i.unit_id===id&&i.status==='open');
+ sheet(`<h3>${u.kind==='garage'?'🚗':'🏠'} ${esc(u.name)}</h3><div class="mute">📍 ${esc(u.location||'')}${u.max_guests?' · 👤 '+u.max_guests:''}</div>
+ <h2>${esc(t('openIssues'))} · ${open.length}</h2>${open.length?open.map(issueCard).join(''):`<div class="mute" style="padding:6px 4px">${esc(t('noIssues'))}</div>`}
+ <button class="btn gold block" style="margin-top:10px" onclick="newIssue('${esc(id)}')">＋ ${esc(t('reportHere'))}</button>
+ <button class="btn light block" style="margin-top:8px" onclick="closeSheet();S.issueApt='${esc(id)}';S.issueFilter='all';go('issues')">📋 ${esc(t('history'))}</button>`)}
+
+/* ---------------- reports (manager) ---------------- */
+function reportsView(){
+ if(S.rMoves===null){loadReport();return `<div class="empty">…</div>`}
+ const mv=S.rMoves;const sum={};mv.forEach(m=>{const s=sum[m.item_id]=sum[m.item_id]||{take:0,return:0,break:0,add:0};if(s[m.kind]!==undefined)s[m.kind]+=m.qty});
+ const from=new Date(S.rFrom),to=new Date(S.rTo+'T23:59:59');
+ const fixed=S.issues.filter(i=>i.status==='done'&&new Date(i.resolved_at)>=from&&new Date(i.resolved_at)<=to);
+ const avg=fixed.length?fixed.reduce((a,i)=>a+(new Date(i.resolved_at)-new Date(i.reported_at)),0)/fixed.length:0;
+ const rows=Object.keys(sum).map(id=>({i:S.items.find(x=>x.id==id)||{id,name_en:'#'+id},s:sum[id]}));
+ return `<div class="card"><div class="row"><div class="grow"><label class="f" style="margin-top:0">${esc(t('from'))}</label><input class="i" type="date" value="${S.rFrom}" onchange="S.rFrom=this.value;S.rMoves=null;render()"></div>
+ <div class="grow"><label class="f" style="margin-top:0">${esc(t('to'))}</label><input class="i" type="date" value="${S.rTo}" onchange="S.rTo=this.value;S.rMoves=null;render()"></div></div></div>
+ <div class="stats">
+  <div class="card"><div class="big" style="color:var(--red)">${S.issues.filter(i=>i.status==='open').length}</div><div class="mute">${esc(t('issuesOpen'))}</div></div>
+  <div class="card"><div class="big" style="color:var(--green)">${fixed.length}</div><div class="mute">${esc(t('issuesDone'))}</div></div>
+  <div class="card"><div class="big">${fixed.length?esc(dur(0,avg)):'—'}</div><div class="mute">${esc(t('avgFix'))}</div></div>
+  <div class="card"><div class="big" style="color:var(--amber)">${S.items.filter(i=>i.qty<i.min_qty).length}</div><div class="mute">${esc(t('shopping'))}</div></div>
+ </div>
+ <h2>📦 ${esc(t('stock'))}</h2>
+ <div class="card" style="overflow-x:auto">${rows.length?`<table class="r"><tr><th>${esc(t('item'))}</th><th class="n">📤</th><th class="n">📥</th><th class="n">💔</th><th class="n">🛒</th></tr>
+  ${rows.map(r=>`<tr><td>${esc(itemName(r.i))}</td><td class="n">${r.s.take||''}</td><td class="n">${r.s.return||''}</td><td class="n">${r.s.break||''}</td><td class="n">${r.s.add||''}</td></tr>`).join('')}</table>
+  <div class="mute small" style="margin-top:8px">📤 ${esc(t('taken'))} · 📥 ${esc(t('returned'))} · 💔 ${esc(t('broken'))} · 🛒 ${esc(t('added'))}</div>`:`<div class="mute">—</div>`}</div>
+ <h2>🕓 ${esc(t('moves'))} · ${mv.length}</h2>
+ <div class="card list">${mv.slice(0,200).map(m=>{const it=S.items.find(x=>x.id===m.item_id);return `<div class="item"><div class="grow"><b>${esc(m.by_name)}</b> ${esc(t('kinds')[m.kind])} <b>${Math.abs(m.qty)}</b> × ${esc(it?itemName(it):'#'+m.item_id)}
+  <div class="mute small">${esc(fmt(m.at))}${m.unit_name?' · 🏢 '+esc(m.unit_name):''}${m.note?' · '+esc(m.note):''}</div></div></div>`}).join('')||'<div class="mute" style="padding:10px 0">—</div>'}</div>
+ <button class="btn block" style="margin-top:6px" onclick="downloadCsv()">⬇️ ${esc(t('csv'))}</button>`}
+async function loadReport(){try{S.rMoves=await api('ops_moves_list',{p_from:S.rFrom,p_to:S.rTo})||[]}catch(e){S.rMoves=[];e.message&&toast(e.message)}if(S.tab==='reports')render()}
+function downloadCsv(){const q=v=>'"'+String(v??'').replace(/"/g,'""')+'"';
+ const lines=[['date','time','person','action','qty','item','apartment','note','stock_after'].join(';')];
+ S.rMoves.forEach(m=>{const it=S.items.find(x=>x.id===m.item_id);const d=new Date(m.at);
+  lines.push([isoDay(d),hm(m.at),m.by_name,m.kind,m.qty,it?itemName(it):m.item_id,m.unit_name||'',m.note||'',m.qty_after??''].map(q).join(';'))});
+ lines.push('');lines.push(['reported','person','apartment','topic','problem','status','fixed','fixed_by','note'].join(';'));
+ S.issues.forEach(i=>lines.push([fmt(i.reported_at),i.reported_by,i.unit_name||'',t('pcat')[i.category]||i.category,i.title,i.status,fmt(i.resolved_at),i.resolved_by||'',i.resolution_note||''].map(q).join(';')));
+ const blob=new Blob(['﻿'+lines.join('\r\n')],{type:'text/csv;charset=utf-8'});const a=document.createElement('a');
+ a.href=URL.createObjectURL(blob);a.download=`vienna-stay-report_${S.rFrom}_${S.rTo}.csv`;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500)}
+
+/* ---------------- settings ---------------- */
+function settingsView(){const mgr=S.me.role==='manager';return `<h2>${esc(t('language'))}</h2><div class="card">${langBar()}</div>
+ ${mgr?`<h2>🔑 ${esc(t('staffPass'))}</h2><div class="card">${S.me.has_pass?'':`<div class="err">${esc(t('noPassYet'))}</div>`}
+  <div class="mute">${esc(t('staffPassHint'))}</div>
+  <label class="f">${esc(t('newPass'))}</label><input class="i" id="spPass" type="text" autocomplete="off" autocapitalize="none">
+  <label class="row" style="margin-top:10px;font-size:14px"><input type="checkbox" id="spKick"> ${esc(t('kick'))}</label>
+  <div id="spMsg"></div><button class="btn block" style="margin-top:12px" onclick="setStaffPass()">${esc(t('setPass'))}</button></div>
+ <h2>👤 ${esc(t('mgrLogin'))}</h2><div class="card">
+  <label class="f">${esc(t('username'))}</label><input class="i" id="mlUser" autocapitalize="none" autocomplete="off" value="${esc(S.me.mgr_user||'')}">
+  <label class="f">${esc(t('newPass'))}</label><input class="i" id="mlPass" type="password" autocomplete="new-password">
+  <div id="mlMsg"></div><button class="btn block" style="margin-top:12px" onclick="setMgrLogin()">${esc(t('save'))}</button></div>`:''}
+ <h2>📱 ${esc(t('install'))}</h2><div class="card mute">${esc(t('installHint'))}</div>
+ <button class="btn red block" style="margin-top:16px" onclick="logout()">${esc(t('logout'))}</button>
+ <p class="mute small" style="text-align:center;margin-top:20px">Vienna Stay Team · v3</p>`}
+async function setMgrLogin(){const u=$('#mlUser').value.trim(),p=$('#mlPass').value;
+ try{await api('ops_set_manager_login',{p_user:u,p_pass:p});S.me.mgr_user=u.toLowerCase();$('#mlPass').value='';$('#mlMsg').innerHTML=`<div class="ok">${esc(t('saved'))}</div>`}
+ catch(e){$('#mlMsg').innerHTML=`<div class="err">${esc(e.message)}</div>`}}
+async function setStaffPass(){const p=$('#spPass').value.trim();
+ try{await api('ops_set_staff_pass',{p_pass:p,p_kick:$('#spKick').checked});S.me.has_pass=true;$('#spPass').value='';$('#spMsg').innerHTML=`<div class="ok">${esc(t('saved'))}</div>`}
+ catch(e){$('#spMsg').innerHTML=`<div class="err">${esc(e.message)}</div>`}}
+
+/* ---------------- start ---------------- */
+if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
+render();boot();
+</script>
+</body>
+</html>
