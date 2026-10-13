@@ -398,6 +398,8 @@ function unitById(id){return S.units.find(u=>u.id===id)}
 function unitLabel(id){const u=unitById(id);return u?u.name:(id||'')}
 function toast(m){const d=document.createElement('div');d.className='toast';d.textContent=m;document.body.appendChild(d);setTimeout(()=>d.remove(),2200)}
 const $=s=>document.querySelector(s);
+/* Inside the App Store / Play Store app the 'add to home screen' tips are meaningless. */
+const NATIVE=!!(window.Capacitor&&window.Capacitor.isNativePlatform&&window.Capacitor.isNativePlatform());
 
 /* ---------------- api ---------------- */
 async function rpc(fn,args,jwt){
@@ -533,7 +535,7 @@ function loginView(){const st=S.loginMode==='staff';return `<main style="padding
   <label class="f">${esc(t('displayName'))}</label><input class="inp" id="mName" value="${esc(S.mName??ls('vst_mname')??'')}" placeholder="Manager" onkeydown="if(event.key==='Enter')managerLogin()">
   ${S.err?`<div class="err">${esc(S.err)}</div>`:''}
   <button class="btn block" style="margin-top:22px" ${S.busy?'disabled':''} onclick="managerLogin()">${esc(t(S.hasManager===false?'createMgr':'login'))}</button>`}
- <div class="hint">${esc(t('installHint'))}</div></div></main>`}
+ ${NATIVE?'':`<div class="hint">${esc(t('installHint'))}</div>`}</div></main>`}
 
 /* ---------------- chat (WhatsApp look) ---------------- */
 function chatView(){
@@ -742,7 +744,7 @@ function settingsView(){const mgr=S.me.role==='manager';return `<div class="sec"
   <label class="f" style="margin-top:0">${esc(t('username'))}</label><input class="inp" id="mlUser" autocapitalize="none" autocomplete="off" value="${esc(S.me.mgr_user||'')}">
   <label class="f">${esc(t('newPass'))}</label><input class="inp" id="mlPass" type="password" autocomplete="new-password">
   <div id="mlMsg"></div><button class="btn block" style="margin-top:14px" onclick="setMgrLogin()">${esc(t('save'))}</button></div>`:''}
- <div class="sec">${ic('phone','s')}${esc(t('install'))}</div><div class="card mute" style="line-height:1.55">${esc(t('installHint'))}</div>
+ ${NATIVE?'':`<div class="sec">${ic('phone','s')}${esc(t('install'))}</div><div class="card mute" style="line-height:1.55">${esc(t('installHint'))}</div>`}
  <button class="btn danger block" style="margin-top:18px" onclick="logout()">${ic('logout','s flip')}${esc(t('logout'))}</button>
  <p class="mute" style="text-align:center;margin-top:22px;font-size:12px;letter-spacing:.08em">VIENNA STAY TEAM · V5</p>`}
 async function setMgrLogin(){const u=$('#mlUser').value.trim(),p=$('#mlPass').value;
