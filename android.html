@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>VS Team – Android</title>
+<style>
+:root{--bg:#f6f4ef;--ink:#16191f;--mute:#6f747c;--line:#e6e2d9;--navy:#1b2230;--brass:#a8865a;--green:#3d7a55}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans Hebrew",Arial,sans-serif}
+main{max-width:460px;margin:0 auto;padding:40px 20px 48px}
+.brand{text-align:center;margin-bottom:28px}
+.mark{font-family:"Iowan Old Style",Palatino,Georgia,serif;letter-spacing:.22em;text-transform:uppercase;font-size:24px;color:var(--navy);padding-inline-start:.22em}
+.rule{width:32px;height:1px;background:var(--brass);margin:12px auto 10px}
+.sub{font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--brass);font-weight:600;padding-inline-start:.32em}
+.langs{display:flex;justify-content:center;gap:4px;margin-bottom:26px}
+.langs button{border:0;background:none;padding:6px 10px;border-radius:8px;font:inherit;font-size:13px;color:var(--mute);cursor:pointer}
+.langs button.on{background:#ebe7e0;color:var(--ink)}
+.step{background:#fff;border:1px solid #efebe4;border-radius:16px;padding:18px;margin-bottom:12px}
+.num{display:inline-flex;width:26px;height:26px;border-radius:50%;background:var(--navy);color:#fff;font-size:13px;font-weight:600;align-items:center;justify-content:center;margin-inline-end:8px}
+h2{font-size:16.5px;margin:0 0 6px;display:flex;align-items:center}
+p{margin:0 0 14px;color:#3b404a;font-size:14.5px}
+a.btn{display:block;text-align:center;background:var(--navy);color:#fff;text-decoration:none;font-weight:600;padding:13px;border-radius:12px}
+a.btn.green{background:var(--green)}
+.note{font-size:13px;color:var(--mute);text-align:center;margin-top:20px}
+</style>
+</head>
+<body><main>
+<div class="langs" id="langs"></div>
+<div class="brand"><div class="mark">Vienna Stay</div><div class="rule"></div><div class="sub">Team · Android</div></div>
+<div id="c"></div>
+</main>
+<script>
+const L={
+de:{s1:'Der Gruppe beitreten',p1:'Mit deinem Google-Konto anmelden und auf „Gruppe beitreten“ tippen.',b1:'Gruppe öffnen',
+s2:'Tester werden',p2:'Auf „Tester werden“ tippen. Wenn „nicht gefunden“ erscheint, ein paar Minuten warten und erneut versuchen.',b2:'Am Test teilnehmen',
+s3:'App installieren',p3:'Die App in Google Play installieren und öffnen.',b3:'In Google Play öffnen',n:'Bitte das gleiche Google-Konto verwenden, das auf dem Handy angemeldet ist.'},
+en:{s1:'Join the group',p1:'Sign in with your Google account and tap “Join group”.',b1:'Open group',
+s2:'Become a tester',p2:'Tap “Become a tester”. If it says “not found”, wait a few minutes and try again.',b2:'Join the test',
+s3:'Install the app',p3:'Install the app from Google Play and open it.',b3:'Open in Google Play',n:'Use the same Google account that is signed in on your phone.'},
+he:{s1:'להצטרף לקבוצה',p1:'להתחבר עם חשבון הגוגל וללחוץ "הצטרפות לקבוצה".',b1:'פתיחת הקבוצה',
+s2:'להפוך לבודק',p2:'ללחוץ "להפוך לבודק". אם כתוב "לא נמצא", לחכות כמה דקות ולנסות שוב.',b2:'הצטרפות לבדיקה',
+s3:'להתקין את האפליקציה',p3:'להתקין את האפליקציה מגוגל פליי ולפתוח אותה.',b3:'פתיחה בגוגל פליי',n:'יש להשתמש באותו חשבון גוגל שמחובר בטלפון.'},
+ru:{s1:'Вступить в группу',p1:'Войдите в аккаунт Google и нажмите «Вступить в группу».',b1:'Открыть группу',
+s2:'Стать тестировщиком',p2:'Нажмите «Стать тестировщиком». Если написано «не найдено», подождите несколько минут.',b2:'Участвовать в тесте',
+s3:'Установить приложение',p3:'Установите приложение из Google Play и откройте его.',b3:'Открыть в Google Play',n:'Используйте тот же аккаунт Google, что и на телефоне.'}};
+const N=[['de','Deutsch'],['en','English'],['he','עברית'],['ru','Русский']];
+const U=['https://groups.google.com/g/vienna-stay-testers','https://play.google.com/apps/testing/at.viennastay.team','https://play.google.com/store/apps/details?id=at.viennastay.team'];
+let lang=(navigator.language||'de').slice(0,2);if(!L[lang])lang='de';
+function r(){const t=L[lang];document.documentElement.lang=lang;document.documentElement.dir=lang==='he'?'rtl':'ltr';
+ document.getElementById('langs').innerHTML=N.map(([k,n])=>`<button class="${k===lang?'on':''}" onclick="lang='${k}';r()">${n}</button>`).join('');
+ document.getElementById('c').innerHTML=[1,2,3].map(i=>`<div class="step"><h2><span class="num">${i}</span>${t['s'+i]}</h2><p>${t['p'+i]}</p><a class="btn ${i===3?'green':''}" href="${U[i-1]}" target="_blank" rel="noopener">${t['b'+i]}</a></div>`).join('')+`<div class="note">${t.n}</div>`}
+r();
+</script>
+</body></html>
