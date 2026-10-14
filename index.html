@@ -499,7 +499,7 @@ const TABS={chat:'chat',issues:'tool',stock:'box',units:'building',reports:'char
 function render(){
  document.documentElement.lang=S.lang;document.documentElement.dir=S.lang==='he'?'rtl':'ltr';
  const app=$('#app');
- if(!S.token||!S.me){app.innerHTML=S.token?`<main><div class="empty">${S.bootErr?ic('alert')+esc(S.bootErr)+`<button class="btn soft sm" onclick="S.bootErr='';render();boot()">${ic('refresh','s')}</button>`:''}</div></main>`:loginView();return}
+ if(!S.token||!S.me){setBar(false);app.innerHTML=S.token?`<main><div class="empty">${S.bootErr?ic('alert')+esc(S.bootErr)+`<button class="btn soft sm" onclick="S.bootErr='';render();boot()">${ic('refresh','s')}</button>`:''}</div></main>`:loginView();return}
  const tabs=['chat','issues','stock','units'];if(S.me.role==='manager')tabs.push('reports');tabs.push('settings');
  const openCount=S.issues.filter(i=>i.status==='open').length;
  const chat=S.tab==='chat';
@@ -509,9 +509,13 @@ function render(){
  <nav class="tabs">${tabs.map(k=>`<button id="tab-${k}" class="${S.tab===k?'on':''}" onclick="go('${k}')">${ic(TABS[k])}<span>${esc(t(k))}</span>${
    k==='chat'?'<span class="badge wab" id="chatBadge" hidden></span>':''}${k==='issues'&&openCount?`<span class="badge">${openCount}</span>`:''}</button>`).join('')}</nav>`;
  if(chat)renderMsgs(false);
- updateBadge();fillPhotos($('#main'))}
+ setBar(chat);updateBadge();fillPhotos($('#main'))}
 function fab(){if(S.tab==='issues')return `<button class="fab" aria-label="${esc(t('newIssue'))}" onclick="newIssue(S.issueApt)">${ic('plus')}</button>`;
  if(S.tab==='stock'&&S.me.role==='manager')return `<button class="fab" aria-label="${esc(t('newItem'))}" onclick="editItem()">${ic('plus')}</button>`;return ''}
+/* Native app: tint the phone's status bar to match the screen (green behind the WhatsApp-style chat). */
+let _bar='';function setBar(chat){if(!NATIVE)return;const k=chat?'chat':'page';if(k===_bar)return;_bar=k;
+ try{const SB=window.Capacitor.Plugins.StatusBar;if(!SB)return;SB.setStyle({style:chat?'DARK':'LIGHT'}).catch(()=>{});
+  SB.setBackgroundColor&&SB.setBackgroundColor({color:chat?'#008069':'#f6f4ef'}).catch(()=>{})}catch(e){}}
 function go(k){S.tab=k;ls('vst_tab',k);if(k==='reports')S.rMoves=null;render();$('#main')&&($('#main').scrollTop=0);if(k==='chat')startPoll()}
 function view(){return({chat:chatView,issues:issuesView,stock:stockView,units:unitsView,reports:reportsView,settings:settingsView}[S.tab]||chatView)()}
 function langBar(){return `<div class="langs">${LANGS.map(([k,n])=>`<button class="${S.lang===k?'on':''}" onclick="setLang('${k}')">${n}</button>`).join('')}</div>`}
