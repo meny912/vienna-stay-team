@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>VS Team – Download</title>
+<link rel="icon" href="icon-192.png">
+<style>
+:root{--bg:#f6f4ef;--ink:#16191f;--mute:#6f747c;--line:#efebe4;--navy:#1b2230;--brass:#a8865a;--green:#3d7a55}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans Hebrew",Arial,sans-serif}
+main{max-width:460px;margin:0 auto;padding:36px 20px 48px}
+.langs{display:flex;justify-content:center;gap:4px;margin-bottom:26px}
+.langs button{border:0;background:none;padding:6px 10px;border-radius:8px;font:inherit;font-size:13px;color:var(--mute);cursor:pointer}
+.langs button.on{background:#ebe7e0;color:var(--ink)}
+.brand{text-align:center;margin-bottom:26px}
+.brand img{width:84px;height:84px;border-radius:20px;box-shadow:0 6px 20px rgba(27,34,48,.18)}
+.mark{font-family:"Iowan Old Style",Palatino,Georgia,serif;letter-spacing:.22em;text-transform:uppercase;font-size:24px;color:var(--navy);margin-top:16px;padding-inline-start:.22em}
+.rule{width:32px;height:1px;background:var(--brass);margin:12px auto 10px}
+.sub{font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--brass);font-weight:600;padding-inline-start:.32em}
+a.dl{display:flex;align-items:center;justify-content:center;gap:10px;background:var(--navy);color:#fff;text-decoration:none;font-weight:600;font-size:17px;padding:16px;border-radius:14px;margin:6px 0 8px}
+a.dl svg{width:22px;height:22px}
+.meta{text-align:center;font-size:12.5px;color:var(--mute);margin-bottom:26px}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px 18px 8px}
+.card h2{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);margin:0 0 12px}
+ol{margin:0;padding-inline-start:20px}
+li{margin-bottom:12px;font-size:14.5px;color:#3b404a}
+li b{color:var(--ink)}
+.alt{text-align:center;font-size:13px;color:var(--mute);margin-top:22px}
+.alt a{color:var(--navy)}
+</style>
+</head>
+<body><main>
+<div class="langs" id="langs"></div>
+<div class="brand"><img src="icon-192.png" alt=""><div class="mark">Vienna Stay</div><div class="rule"></div><div class="sub">Team</div></div>
+<div id="c"></div>
+</main>
+<script>
+const APK='https://github.com/meny912/vienna-stay-team/releases/latest/download/VS-Team.apk';
+const L={
+de:{dl:'Für Android herunterladen',meta:'Version 1.0 · ca. 4 MB · Android 7 oder neuer',h:'So installierst du die App',
+s:['Tippe oben auf <b>„Für Android herunterladen“</b>.','Öffne die heruntergeladene Datei <b>VS-Team.apk</b> (in der Benachrichtigung oder im Ordner „Downloads“).','Wenn das Handy fragt: <b>„Einstellungen“</b> → <b>„Aus dieser Quelle zulassen“</b> aktivieren → zurück.','Tippe auf <b>„Installieren“</b> und dann auf <b>„Öffnen“</b>.','Melde dich mit deinem Namen und dem Team-Passwort an.'],
+alt:'iPhone? Die App im Browser öffnen:',open:'App im Browser öffnen'},
+en:{dl:'Download for Android',meta:'Version 1.0 · about 4 MB · Android 7 or newer',h:'How to install',
+s:['Tap <b>“Download for Android”</b> above.','Open the downloaded file <b>VS-Team.apk</b> (from the notification or the “Downloads” folder).','If your phone asks: tap <b>“Settings”</b> → turn on <b>“Allow from this source”</b> → go back.','Tap <b>“Install”</b>, then <b>“Open”</b>.','Sign in with your name and the team password.'],
+alt:'iPhone? Open the app in your browser:',open:'Open the app in the browser'},
+he:{dl:'הורדה לאנדרואיד',meta:'גרסה 1.0 · בערך 4MB · אנדרואיד 7 ומעלה',h:'איך מתקינים',
+s:['לוחצים למעלה על <b>"הורדה לאנדרואיד"</b>.','פותחים את הקובץ שירד, <b>VS-Team.apk</b> (מההתראה או מתיקיית "הורדות").','אם הטלפון שואל: <b>"הגדרות"</b> ← להפעיל <b>"התרת התקנה ממקור זה"</b> ← לחזור אחורה.','לוחצים <b>"התקנה"</b> ואחר כך <b>"פתיחה"</b>.','נכנסים עם השם שלכם וסיסמת הצוות.'],
+alt:'אייפון? פותחים את האפליקציה בדפדפן:',open:'פתיחת האפליקציה בדפדפן'},
+ru:{dl:'Скачать для Android',meta:'Версия 1.0 · около 4 МБ · Android 7 или новее',h:'Как установить',
+s:['Нажмите вверху <b>«Скачать для Android»</b>.','Откройте скачанный файл <b>VS-Team.apk</b> (в уведомлении или в папке «Загрузки»).','Если телефон спросит: <b>«Настройки»</b> → включите <b>«Разрешить из этого источника»</b> → назад.','Нажмите <b>«Установить»</b>, затем <b>«Открыть»</b>.','Войдите со своим именем и паролем команды.'],
+alt:'iPhone? Откройте приложение в браузере:',open:'Открыть приложение в браузере'}};
+const N=[['de','Deutsch'],['en','English'],['he','עברית'],['ru','Русский']];
+const DL='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5v11.5M7.5 10.5 12 15l4.5-4.5M4.5 20.5h15"/></svg>';
+let lang=(navigator.language||'de').slice(0,2);if(!L[lang])lang='de';
+function r(){const t=L[lang];document.documentElement.lang=lang;document.documentElement.dir=lang==='he'?'rtl':'ltr';
+ document.getElementById('langs').innerHTML=N.map(([k,n])=>`<button class="${k===lang?'on':''}" onclick="lang='${k}';r()">${n}</button>`).join('');
+ document.getElementById('c').innerHTML=`<a class="dl" href="${APK}">${DL}${t.dl}</a><div class="meta">${t.meta}</div>
+ <div class="card"><h2>${t.h}</h2><ol>${t.s.map(x=>`<li>${x}</li>`).join('')}</ol></div>
+ <div class="alt">${t.alt}<br><a href="./">${t.open}</a></div>`}
+r();
+</script>
+</body></html>
