@@ -108,6 +108,8 @@ textarea.inp{min-height:88px;resize:vertical}
 .timeline .ev{position:relative;padding:2px 0 14px}
 .timeline .ev::before{content:'';position:absolute;inset-inline-start:-16px;top:7px;width:8px;height:8px;border-radius:50%;background:var(--brass)}
 .timeline .ev.ok::before{background:var(--green)}
+.timeline .ev.prog::before{background:var(--amber)}
+.wa-note.prog{background:#fdebc8}
 .timeline .ev+.ev::after{content:'';position:absolute;inset-inline-start:-12.5px;top:-9px;height:16px;border-inline-start:1px dashed #cfc8bb}
 .timeline .when{font-weight:600;font-size:14.5px}
 .timeline .by{font-size:13px;color:var(--mute)}
@@ -224,7 +226,7 @@ const KEY='sb_publishable_7rFRtC0xjZGOCNm0DKsgqw_66DyQA_i';
 /* ---------------- translations ---------------- */
 const LANGS=[['he','עברית'],['de','Deutsch'],['en','English'],['ru','Русский']];
 const T={
-he:{stOpen:'פתוחה',stDone:'טופלה',firstMgr:'זו הפעם הראשונה: צור כאן את שם המשתמש והסיסמה של המנהל.',repeatPass:'חזור על הסיסמה',mismatch:'הסיסמאות לא זהות',createMgr:'צור מנהל והיכנס',hasMgr:'כבר קיים מנהל — היכנס עם הפרטים שלו',noMgr:'עדיין לא נוצר מנהל',mgrLogin:'שם משתמש וסיסמת מנהל',mgrLoginHint:'שם משתמש וסיסמה למנהל באפליקציה הזו. גם החשבון של הקוקפיט ימשיך לעבוד.',short8:'סיסמה קצרה מדי (לפחות 8 תווים)',app:'Vienna Stay צוות',staff:'עובד',manager:'מנהל',yourName:'השם שלך',password:'סיסמה',username:'שם משתמש',login:'כניסה',logout:'יציאה',
+he:{stProgress:'בטיפול',markProgress:'סמן שבטיפול',progressNote:'מה מתוכנן? (לא חובה)',progressAt:'סומן בטיפול',progressBy:'מטפל/ת',issueProgress:'תקלה בטיפול',progress:'בטיפול',stOpen:'פתוחה',stDone:'טופלה',firstMgr:'זו הפעם הראשונה: צור כאן את שם המשתמש והסיסמה של המנהל.',repeatPass:'חזור על הסיסמה',mismatch:'הסיסמאות לא זהות',createMgr:'צור מנהל והיכנס',hasMgr:'כבר קיים מנהל — היכנס עם הפרטים שלו',noMgr:'עדיין לא נוצר מנהל',mgrLogin:'שם משתמש וסיסמת מנהל',mgrLoginHint:'שם משתמש וסיסמה למנהל באפליקציה הזו. גם החשבון של הקוקפיט ימשיך לעבוד.',short8:'סיסמה קצרה מדי (לפחות 8 תווים)',app:'Vienna Stay צוות',staff:'עובד',manager:'מנהל',yourName:'השם שלך',password:'סיסמה',username:'שם משתמש',login:'כניסה',logout:'יציאה',
 chat:'צ׳אט',issues:'תקלות',stock:'מחסן',units:'דירות',reports:'דוחות',settings:'הגדרות',
 typeMsg:'כתוב הודעה…',camera:'מצלמה',gallery:'גלריה',send:'שלח',noMsgs:'אין עדיין הודעות. תהיה הראשון!',
 newIssue:'דיווח על תקלה',open:'פתוחות',done:'טופלו',all:'הכל',apartment:'דירה',noApt:'— כללי / לא בדירה —',topic:'נושא',
@@ -247,7 +249,7 @@ mgrAccount:'חשבון המנהל (כמו בקוקפיט)',displayName:'השם �
 kinds:{take:'לקח',break:'שבר',return:'החזיר',add:'הכניס',adjust:'תיקן ספירה'},
 icat:{kitchen:'מטבח',linen:'מצעים ומגבות',consumables:'מתכלים',cleaning:'ניקיון',other:'אחר'},
 pcat:{plumbing:'אינסטלציה / מים',electric:'חשמל ותאורה',heating:'חימום / מזגן',appliances:'מכשירי חשמל',furniture:'ריהוט ונזק',cleaning:'ניקיון',access:'כניסה / מפתחות / קוד',internet:'אינטרנט / טלוויזיה',work:'בעיה בעבודה',other:'אחר'}},
-de:{stOpen:'Offen',stDone:'Erledigt',firstMgr:'Zum ersten Mal: Lege hier Benutzername und Passwort des Managers an.',repeatPass:'Passwort wiederholen',mismatch:'Passwörter stimmen nicht überein',createMgr:'Manager anlegen & anmelden',hasMgr:'Es gibt schon einen Manager — bitte anmelden',noMgr:'Noch kein Manager angelegt',mgrLogin:'Manager-Anmeldung',mgrLoginHint:'Benutzername und Passwort für den Manager in dieser App. Das Cockpit-Konto funktioniert weiterhin.',short8:'Passwort zu kurz (min. 8 Zeichen)',app:'Vienna Stay Team',staff:'Mitarbeiter',manager:'Manager',yourName:'Dein Name',password:'Passwort',username:'Benutzername',login:'Anmelden',logout:'Abmelden',
+de:{stProgress:'In Bearbeitung',markProgress:'Als „in Bearbeitung“ markieren',progressNote:'Was ist geplant? (optional)',progressAt:'In Bearbeitung seit',progressBy:'Bearbeitet von',issueProgress:'Problem in Bearbeitung',progress:'In Arbeit',stOpen:'Offen',stDone:'Erledigt',firstMgr:'Zum ersten Mal: Lege hier Benutzername und Passwort des Managers an.',repeatPass:'Passwort wiederholen',mismatch:'Passwörter stimmen nicht überein',createMgr:'Manager anlegen & anmelden',hasMgr:'Es gibt schon einen Manager — bitte anmelden',noMgr:'Noch kein Manager angelegt',mgrLogin:'Manager-Anmeldung',mgrLoginHint:'Benutzername und Passwort für den Manager in dieser App. Das Cockpit-Konto funktioniert weiterhin.',short8:'Passwort zu kurz (min. 8 Zeichen)',app:'Vienna Stay Team',staff:'Mitarbeiter',manager:'Manager',yourName:'Dein Name',password:'Passwort',username:'Benutzername',login:'Anmelden',logout:'Abmelden',
 chat:'Chat',issues:'Probleme',stock:'Lager',units:'Wohnungen',reports:'Berichte',settings:'Einstellungen',
 typeMsg:'Nachricht schreiben…',camera:'Kamera',gallery:'Galerie',send:'Senden',noMsgs:'Noch keine Nachrichten.',
 newIssue:'Problem melden',open:'Offen',done:'Erledigt',all:'Alle',apartment:'Wohnung',noApt:'— Allgemein / keine Wohnung —',topic:'Thema',
@@ -270,7 +272,7 @@ mgrAccount:'Manager-Konto (wie im Cockpit)',displayName:'Angezeigter Name',sendi
 kinds:{take:'nahm',break:'kaputt',return:'zurück',add:'eingekauft',adjust:'korrigiert'},
 icat:{kitchen:'Küche',linen:'Bettwäsche & Handtücher',consumables:'Verbrauchsartikel',cleaning:'Reinigung',other:'Sonstiges'},
 pcat:{plumbing:'Sanitär / Wasser',electric:'Strom & Licht',heating:'Heizung / Klima',appliances:'Geräte',furniture:'Möbel & Schäden',cleaning:'Reinigung',access:'Zugang / Schlüssel / Code',internet:'Internet / TV',work:'Problem bei der Arbeit',other:'Sonstiges'}},
-en:{stOpen:'Open',stDone:'Fixed',firstMgr:'First time: create the manager username and password here.',repeatPass:'Repeat password',mismatch:'Passwords do not match',createMgr:'Create manager & sign in',hasMgr:'A manager already exists — please sign in',noMgr:'No manager created yet',mgrLogin:'Manager sign-in',mgrLoginHint:'Username and password for the manager in this app. The cockpit account keeps working too.',short8:'Password too short (min. 8 characters)',app:'Vienna Stay Team',staff:'Staff',manager:'Manager',yourName:'Your name',password:'Password',username:'Username',login:'Sign in',logout:'Sign out',
+en:{stProgress:'In progress',markProgress:'Mark as in progress',progressNote:'What is planned? (optional)',progressAt:'In progress since',progressBy:'Handled by',issueProgress:'Issue in progress',progress:'In progress',stOpen:'Open',stDone:'Fixed',firstMgr:'First time: create the manager username and password here.',repeatPass:'Repeat password',mismatch:'Passwords do not match',createMgr:'Create manager & sign in',hasMgr:'A manager already exists — please sign in',noMgr:'No manager created yet',mgrLogin:'Manager sign-in',mgrLoginHint:'Username and password for the manager in this app. The cockpit account keeps working too.',short8:'Password too short (min. 8 characters)',app:'Vienna Stay Team',staff:'Staff',manager:'Manager',yourName:'Your name',password:'Password',username:'Username',login:'Sign in',logout:'Sign out',
 chat:'Chat',issues:'Issues',stock:'Storage',units:'Apartments',reports:'Reports',settings:'Settings',
 typeMsg:'Type a message…',camera:'Camera',gallery:'Gallery',send:'Send',noMsgs:'No messages yet.',
 newIssue:'Report a problem',open:'Open',done:'Fixed',all:'All',apartment:'Apartment',noApt:'— General / no apartment —',topic:'Topic',
@@ -293,7 +295,7 @@ mgrAccount:'Manager account (same as the cockpit)',displayName:'Display name',se
 kinds:{take:'took',break:'broke',return:'returned',add:'added',adjust:'recounted'},
 icat:{kitchen:'Kitchen',linen:'Linen & towels',consumables:'Consumables',cleaning:'Cleaning',other:'Other'},
 pcat:{plumbing:'Plumbing / water',electric:'Electric & lights',heating:'Heating / AC',appliances:'Appliances',furniture:'Furniture & damage',cleaning:'Cleaning',access:'Access / keys / code',internet:'Internet / TV',work:'Work problem',other:'Other'}},
-ru:{stOpen:'Открыта',stDone:'Решена',firstMgr:'Первый запуск: создайте здесь логин и пароль менеджера.',repeatPass:'Повторите пароль',mismatch:'Пароли не совпадают',createMgr:'Создать менеджера и войти',hasMgr:'Менеджер уже существует — войдите',noMgr:'Менеджер ещё не создан',mgrLogin:'Вход менеджера',mgrLoginHint:'Логин и пароль менеджера для этого приложения. Аккаунт кокпита тоже продолжит работать.',short8:'Слишком короткий пароль (мин. 8 символов)',app:'Vienna Stay Команда',staff:'Сотрудник',manager:'Менеджер',yourName:'Ваше имя',password:'Пароль',username:'Логин',login:'Войти',logout:'Выйти',
+ru:{stProgress:'В работе',markProgress:'Отметить «в работе»',progressNote:'Что планируется? (необязательно)',progressAt:'В работе с',progressBy:'Занимается',issueProgress:'Проблема в работе',progress:'В работе',stOpen:'Открыта',stDone:'Решена',firstMgr:'Первый запуск: создайте здесь логин и пароль менеджера.',repeatPass:'Повторите пароль',mismatch:'Пароли не совпадают',createMgr:'Создать менеджера и войти',hasMgr:'Менеджер уже существует — войдите',noMgr:'Менеджер ещё не создан',mgrLogin:'Вход менеджера',mgrLoginHint:'Логин и пароль менеджера для этого приложения. Аккаунт кокпита тоже продолжит работать.',short8:'Слишком короткий пароль (мин. 8 символов)',app:'Vienna Stay Команда',staff:'Сотрудник',manager:'Менеджер',yourName:'Ваше имя',password:'Пароль',username:'Логин',login:'Войти',logout:'Выйти',
 chat:'Чат',issues:'Проблемы',stock:'Склад',units:'Квартиры',reports:'Отчёты',settings:'Настройки',
 typeMsg:'Сообщение…',camera:'Камера',gallery:'Галерея',send:'Отправить',noMsgs:'Сообщений пока нет.',
 newIssue:'Сообщить о проблеме',open:'Открытые',done:'Решённые',all:'Все',apartment:'Квартира',noApt:'— Общее / без квартиры —',topic:'Тема',
@@ -472,7 +474,7 @@ async function syncNow(){
 /* Never yank the screen from under someone: wait while a form is open or they are typing. */
 function busyUI(){const a=document.activeElement;return !!$('.sheetbg')||!!$('.attach')||!!(a&&/INPUT|TEXTAREA|SELECT/.test(a.tagName))}
 function safeRender(){if(busyUI()){S.dirty=true;return}S.dirty=false;const m=$('#main'),y=m?m.scrollTop:0;render();const m2=$('#main');if(m2)m2.scrollTop=y}
-function updateNavBadges(){const btn=$('#tab-issues');if(!btn)return;const b=btn.querySelector('.badge'),n=S.issues.filter(i=>i.status==='open').length;
+function updateNavBadges(){const btn=$('#tab-issues');if(!btn)return;const b=btn.querySelector('.badge'),n=S.issues.filter(i=>i.status!=='done').length;
  if(n){if(b)b.textContent=n;else btn.insertAdjacentHTML('beforeend',`<span class="badge">${n}</span>`)}else if(b)b.remove()}
 function startPoll(){stopPoll();const tick=async()=>{if(!S.token)return;await syncNow();if(S.dirty&&!busyUI())safeRender();
   pollT=setTimeout(tick,document.hidden?30000:4000)};pollT=setTimeout(tick,1500)}
@@ -502,7 +504,7 @@ function render(){
  const app=$('#app');
  if(!S.token||!S.me){setBar(false);app.innerHTML=S.token?`<main><div class="empty">${S.bootErr?ic('alert')+esc(S.bootErr)+`<button class="btn soft sm" onclick="S.bootErr='';render();boot()">${ic('refresh','s')}</button>`:''}</div></main>`:loginView();return}
  const tabs=['chat','issues','stock','units'];if(S.me.role==='manager')tabs.push('reports');tabs.push('settings');
- const openCount=S.issues.filter(i=>i.status==='open').length;
+ const openCount=S.issues.filter(i=>i.status!=='done').length;
  const chat=S.tab==='chat';
  app.innerHTML=`${chat?'':`<div class="top"><h1>${esc(t(S.tab))}</h1><div class="who"><b>${esc(S.me.name)}</b>${S.me.role==='manager'?esc(t('manager')):esc(t('staff'))}</div></div>`}
  <main id="main" ${chat?'style="padding:0;overflow:hidden"':''}>${view()}</main>
@@ -570,8 +572,8 @@ function renderMsgs(onlyNew){
  const today=isoDay(new Date()),yest=isoDay(new Date(Date.now()-864e5));
  for(const m of S.msgs){const d=isoDay(new Date(m.at));
   if(d!==lastDay){lastDay=d;prev=null;html+=`<div class="wa-day"><span>${d===today?esc(t('today')):d===yest?esc(t('yesterday')):esc(fmt(m.at,{weekday:'long',day:'numeric',month:'long'}))}</span></div>`}
-  if(m.sys){const iss=S.issues.find(i=>i.id===m.issue_id);const lbl={issue_new:t('issueNew'),issue_done:t('issueDone'),issue_reopen:t('issueReopen')}[m.sys];
-   html+=`<div class="wa-note ${m.sys==='issue_done'?'done':''}"><b>${esc(lbl)}</b> · ${esc(m.by_name)} · ${esc(hm(m.at))}<br>${esc(m.body)}${iss&&iss.unit_id?` — ${esc(unitLabel(iss.unit_id))}`:''}
+  if(m.sys){const iss=S.issues.find(i=>i.id===m.issue_id);const lbl={issue_new:t('issueNew'),issue_done:t('issueDone'),issue_reopen:t('issueReopen'),issue_progress:t('issueProgress')}[m.sys];
+   html+=`<div class="wa-note ${m.sys==='issue_done'?'done':m.sys==='issue_progress'?'prog':''}"><b>${esc(lbl)}</b> · ${esc(m.by_name)} · ${esc(hm(m.at))}<br>${esc(m.body)}${iss&&iss.unit_id?` — ${esc(unitLabel(iss.unit_id))}`:''}
    ${m.photo_id?`<img data-pid="${esc(m.photo_id)}" alt="" onclick="zoom(this.src)">`:''}${m.issue_id?`<br><button class="lk" onclick="openIssue(${m.issue_id})">${esc(t('view'))}</button>`:''}</div>`;prev=null;continue}
   const mine=m.by_name===me,first=!prev||prev.by_name!==m.by_name||(new Date(m.at)-new Date(prev.at))>6e5;prev=m;
   const meta=`<span class="wa-meta">${esc(hm(m.at))}${mine?TICKS:''}</span>`;
@@ -601,13 +603,14 @@ function issuesView(){
  if(S.issueApt)list=list.filter(i=>i.unit_id===S.issueApt);
  const groups={};list.forEach(i=>{(groups[i.category]=groups[i.category]||[]).push(i)});
  const cnt=k=>S.issues.filter(i=>(k==='all'||i.status===k)&&(!S.issueApt||i.unit_id===S.issueApt)).length;
- return `<div class="seg">${['open','done','all'].map(k=>`<button class="${f===k?'on':''}" onclick="S.issueFilter='${k}';render()">${esc(t(k))}<span class="c">${cnt(k)}</span></button>`).join('')}</div>
+ return `<div class="seg">${['open','progress','done','all'].map(k=>`<button class="${f===k?'on':''}" onclick="S.issueFilter='${k}';render()">${esc(t(k))}<span class="c">${cnt(k)}</span></button>`).join('')}</div>
  ${S.issueApt?`<div class="group" style="margin-bottom:6px"><div class="cell"><span class="tile">${ic('building')}</span><div class="grow t1">${esc(unitLabel(S.issueApt))}</div><button class="xbtn" onclick="S.issueApt='';render()">${ic('x')}</button></div></div>`:''}
  ${list.length?PCATS.filter(c=>groups[c]).map(c=>`<div class="sec">${ic(PICON[c],'s')}${esc(t('pcat')[c])}<span class="n">${groups[c].length}</span></div><div class="group">${groups[c].map(issueCell).join('')}</div>`).join(''):`<div class="empty">${ic('check')}${esc(t('noIssues'))}</div>`}`}
+function stPill(i){const k=i.status;return `<span class="pill ${k==='done'?'green':k==='progress'?'amber':'red'}">${esc(t(k==='done'?'stDone':k==='progress'?'stProgress':'stOpen'))}</span>`}
 function issueCell(i){const done=i.status==='done';return `<button class="cell" onclick="openIssue(${i.id})">
- <div class="grow"><div class="row" style="gap:8px"><div class="t1 grow">${esc(i.title)}</div><span class="pill ${done?'green':'red'}">${esc(t(done?'stDone':'stOpen'))}</span></div>
+ <div class="grow"><div class="row" style="gap:8px"><div class="t1 grow">${esc(i.title)}</div>${stPill(i)}</div>
  <div class="t2">${i.unit_id?esc(i.unit_name||i.unit_id):esc(t('noApt'))}</div>
- <div class="t2">${esc(fmt(i.reported_at))} · ${esc(i.reported_by)}${done?` → ${esc(fmt(i.resolved_at))} · ${esc(dur(i.reported_at,i.resolved_at))}`:''}</div></div>
+ <div class="t2">${esc(fmt(i.reported_at))} · ${esc(i.reported_by)}${done?` → ${esc(fmt(i.resolved_at))} · ${esc(dur(i.reported_at,i.resolved_at))}`:i.status==='progress'?` → ${esc(t('stProgress'))}: ${esc(i.progress_by||'')}`:''}</div></div>
  ${ic('chev','s chev flip')}</button>`}
 function sheet(html){closeSheet();const bg=document.createElement('div');bg.className='sheetbg';bg.innerHTML=`<div class="sheet"><div class="grab"></div>${html}</div>`;
  bg.addEventListener('click',e=>{if(e.target===bg)closeSheet()});document.body.appendChild(bg);fillPhotos(bg);return bg}
@@ -632,16 +635,23 @@ async function submitIssue(){const title=$('#niTitle').value.trim();if(!title){$
   closeSheet();toast(t('saved'));await Promise.all([loadIssues(),loadMsgs(),loadUnits()]);S.issueFilter='open';render()}
  catch(e){$('#niErr').innerHTML=`<div class="err">${esc(e.message)}</div>`;b.disabled=false;b.textContent=t('report')}}
 function openIssue(id){const i=S.issues.find(x=>x.id===id);if(!i){toast('…');return}const done=i.status==='done';
- sheet(`<div class="row" style="gap:8px;margin-bottom:10px"><span class="pill grey nodot">${ic(PICON[i.category]||'help','s')} ${esc(t('pcat')[i.category]||i.category)}</span><span class="grow"></span><span class="pill ${done?'green':'red'}">${esc(t(done?'stDone':'stOpen'))}</span><button class="xbtn" onclick="closeSheet()">${ic('x')}</button></div>
+ sheet(`<div class="row" style="gap:8px;margin-bottom:10px"><span class="pill grey nodot">${ic(PICON[i.category]||'help','s')} ${esc(t('pcat')[i.category]||i.category)}</span><span class="grow"></span>${stPill(i)}<button class="xbtn" onclick="closeSheet()">${ic('x')}</button></div>
  <h3 style="font-size:20px">${esc(i.title)}</h3>
  <div class="mute" style="margin-top:4px">${i.unit_id?esc(i.unit_name||i.unit_id)+(i.unit_location?' · '+esc(i.unit_location):''):esc(t('noApt'))}</div>
  ${i.details?`<p style="white-space:pre-wrap;margin:12px 0 0">${esc(i.details)}</p>`:''}${photoTag(i.photo_id)}
  <div class="card" style="margin-top:14px"><div class="timeline">
   <div class="ev"><div class="when">${esc(t('reportedAt'))} · ${esc(fmt(i.reported_at))}</div><div class="by">${esc(t('reportedBy'))}: ${esc(i.reported_by)}</div></div>
+  ${i.progress_at?`<div class="ev prog"><div class="when">${esc(t('progressAt'))} · ${esc(fmt(i.progress_at))}</div><div class="by">${esc(t('progressBy'))}: ${esc(i.progress_by)}</div>${i.progress_note?`<div style="white-space:pre-wrap;margin-top:6px;font-size:14.5px">${esc(i.progress_note)}</div>`:''}</div>`:''}
   ${done?`<div class="ev ok"><div class="when">${esc(t('handledAt'))} · ${esc(fmt(i.resolved_at))}</div><div class="by">${esc(t('handledBy'))}: ${esc(i.resolved_by)} · ${esc(t('took'))} ${esc(dur(i.reported_at,i.resolved_at))}</div>${i.resolution_note?`<div style="white-space:pre-wrap;margin-top:6px;font-size:14.5px">${esc(i.resolution_note)}</div>`:''}</div>`:''}
  </div></div>
  ${done?`<button class="btn ghost block" onclick="setIssue(${i.id},false)">${ic('undo','s')}${esc(t('reopen'))}</button>`:
- `<label class="f">${esc(t('handleNote'))}</label><textarea class="inp" id="isNote"></textarea><button class="btn ok block" style="margin-top:14px" onclick="setIssue(${i.id},true)">${ic('check','s')}${esc(t('markDone'))}</button>`}`)}
+ `<label class="f">${esc(t(i.status==='open'?'progressNote':'handleNote'))}</label><textarea class="inp" id="isNote"></textarea>
+ ${i.status==='open'?`<button class="btn block" style="margin-top:14px;background:var(--amber)" onclick="setProgress(${i.id})">${ic('clock','s')}${esc(t('markProgress'))}</button>`:''}
+ <button class="btn ok block" style="margin-top:10px" onclick="setIssue(${i.id},true)">${ic('check','s')}${esc(t('markDone'))}</button>
+ ${i.status==='progress'?`<button class="btn ghost block" style="margin-top:10px" onclick="setIssue(${i.id},false)">${ic('undo','s')}${esc(t('reopen'))}</button>`:''}`}`)}
+async function setProgress(id){const n=$('#isNote');
+ try{await api('ops_issue_progress',{p_id:id,p_note:n?n.value.trim():''});closeSheet();toast(t('saved'));await Promise.all([loadIssues(),loadMsgs(),loadUnits()]);render()}
+ catch(e){e.message&&toast(e.message)}}
 async function setIssue(id,done){const n=$('#isNote');
  try{await api('ops_issue_set',{p_id:id,p_done:done,p_note:n?n.value.trim():''});closeSheet();toast(t('saved'));await Promise.all([loadIssues(),loadMsgs(),loadUnits()]);render()}
  catch(e){e.message&&toast(e.message)}}
@@ -699,7 +709,7 @@ function unitsView(){const q=S.unitQ.toLowerCase();const by={};
  ${keys.length?keys.map(l=>`<div class="sec">${ic('pin','s')}${esc(l.replace(/, \d{4} Wien$/,''))}<span class="n">${by[l].length}</span></div><div class="group">${by[l].map(u=>`<button class="cell ind" onclick="unitSheet('${esc(u.id)}')">
   <span class="tile">${ic(u.kind==='garage'?'car':'home')}</span><div class="grow"><div class="t1">${esc(u.name)}</div>${u.max_guests?`<div class="t2">${u.max_guests} ${ic('user','s')}</div>`:''}</div>
   ${u.open_issues?`<span class="pill red">${u.open_issues}</span>`:''}${ic('chev','s chev flip')}</button>`).join('')}</div>`).join(''):`<div class="empty">${ic('building')}${esc(t('noUnits'))}</div>`}`}
-function unitSheet(id){const u=unitById(id);if(!u)return;const open=S.issues.filter(i=>i.unit_id===id&&i.status==='open');
+function unitSheet(id){const u=unitById(id);if(!u)return;const open=S.issues.filter(i=>i.unit_id===id&&i.status!=='done');
  sheet(`${sheadX(esc(u.name))}<div class="mute">${esc(u.location||'')}${u.max_guests?` · ${u.max_guests} ${ic('user','s')}`:''}</div>
  <div class="sec">${esc(t('openIssues'))}<span class="n">${open.length}</span></div>${open.length?`<div class="group">${open.map(issueCell).join('')}</div>`:`<div class="mute" style="padding:4px 6px">${esc(t('noIssues'))}</div>`}
  <button class="btn block" style="margin-top:18px" onclick="newIssue('${esc(id)}')">${ic('plus','s')}${esc(t('reportHere'))}</button>
@@ -716,7 +726,7 @@ function reportsView(){
  return `<div class="row" style="margin-bottom:12px"><div class="grow"><label class="f" style="margin-top:0">${esc(t('from'))}</label><input class="inp" type="date" value="${S.rFrom}" onchange="S.rFrom=this.value;S.rMoves=null;render()"></div>
  <div class="grow"><label class="f" style="margin-top:0">${esc(t('to'))}</label><input class="inp" type="date" value="${S.rTo}" onchange="S.rTo=this.value;S.rMoves=null;render()"></div></div>
  <div class="stats">
-  <div class="stat"><div class="v" style="color:var(--red)">${S.issues.filter(i=>i.status==='open').length}</div><div class="l">${esc(t('issuesOpen'))}</div></div>
+  <div class="stat"><div class="v" style="color:var(--red)">${S.issues.filter(i=>i.status!=='done').length}</div><div class="l">${esc(t('issuesOpen'))}</div></div>
   <div class="stat"><div class="v" style="color:var(--green)">${fixed.length}</div><div class="l">${esc(t('issuesDone'))}</div></div>
   <div class="stat"><div class="v">${fixed.length?esc(dur(0,avg)):'—'}</div><div class="l">${esc(t('avgFix'))}</div></div>
   <div class="stat"><div class="v" style="color:var(--amber)">${S.items.filter(i=>i.qty<i.min_qty).length}</div><div class="l">${esc(t('shopping'))}</div></div>
@@ -733,8 +743,8 @@ function downloadCsv(){const q=v=>'"'+String(v??'').replace(/"/g,'""')+'"';
  const lines=[['date','time','person','action','qty','item','apartment','note','stock_after'].join(';')];
  S.rMoves.forEach(m=>{const it=S.items.find(x=>x.id===m.item_id);const d=new Date(m.at);
   lines.push([isoDay(d),hm(m.at),m.by_name,m.kind,m.qty,it?itemName(it):m.item_id,m.unit_name||'',m.note||'',m.qty_after??''].map(q).join(';'))});
- lines.push('');lines.push(['reported','person','apartment','topic','problem','status','fixed','fixed_by','note'].join(';'));
- S.issues.forEach(i=>lines.push([fmt(i.reported_at),i.reported_by,i.unit_name||'',t('pcat')[i.category]||i.category,i.title,i.status,fmt(i.resolved_at),i.resolved_by||'',i.resolution_note||''].map(q).join(';')));
+ lines.push('');lines.push(['reported','person','apartment','topic','problem','status','in_progress_since','in_progress_by','fixed','fixed_by','note'].join(';'));
+ S.issues.forEach(i=>lines.push([fmt(i.reported_at),i.reported_by,i.unit_name||'',t('pcat')[i.category]||i.category,i.title,i.status,fmt(i.progress_at),i.progress_by||'',fmt(i.resolved_at),i.resolved_by||'',i.resolution_note||''].map(q).join(';')));
  const blob=new Blob(['﻿'+lines.join('\r\n')],{type:'text/csv;charset=utf-8'});const a=document.createElement('a');
  a.href=URL.createObjectURL(blob);a.download=`vienna-stay-report_${S.rFrom}_${S.rTo}.csv`;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500)}
 
@@ -751,7 +761,7 @@ function settingsView(){const mgr=S.me.role==='manager';return `<div class="sec"
   <div id="mlMsg"></div><button class="btn block" style="margin-top:14px" onclick="setMgrLogin()">${esc(t('save'))}</button></div>`:''}
  ${NATIVE?'':`<div class="sec">${ic('phone','s')}${esc(t('install'))}</div><div class="card mute" style="line-height:1.55">${esc(t('installHint'))}</div>`}
  <button class="btn danger block" style="margin-top:18px" onclick="logout()">${ic('logout','s flip')}${esc(t('logout'))}</button>
- <p class="mute" style="text-align:center;margin-top:22px;font-size:12px;letter-spacing:.08em">VIENNA STAY TEAM · V5</p>`}
+ <p class="mute" style="text-align:center;margin-top:22px;font-size:12px;letter-spacing:.08em">VIENNA STAY TEAM · V6</p>`}
 async function setMgrLogin(){const u=$('#mlUser').value.trim(),p=$('#mlPass').value;
  try{await api('ops_set_manager_login',{p_user:u,p_pass:p});S.me.mgr_user=u.toLowerCase();$('#mlPass').value='';$('#mlMsg').innerHTML=`<div class="okmsg">${esc(t('saved'))}</div>`}
  catch(e){$('#mlMsg').innerHTML=`<div class="err">${esc(e.message)}</div>`}}
