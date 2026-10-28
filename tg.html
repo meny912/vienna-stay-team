@@ -49,6 +49,11 @@ ul.rules li b{color:var(--ink)}
 a.join{display:flex;align-items:center;justify-content:center;gap:10px;background:var(--tg);color:#fff;text-decoration:none;font-weight:600;font-size:16.5px;padding:15px;border-radius:14px;transition:opacity .2s}
 a.join svg{width:22px;height:22px}
 a.join.off{opacity:.38;pointer-events:none}
+.codel{display:block;font-size:13.5px;color:var(--mute);margin:4px 2px 6px;font-weight:500}
+.code{width:100%;border:1px solid #e6e2d9;border-radius:12px;padding:13px 14px;font-size:18px;letter-spacing:.08em;background:#fff;margin-bottom:8px;outline:none}
+.code:focus{border-color:#c9c2b5;box-shadow:0 0 0 4px rgba(168,134,90,.12)}
+.msg{color:var(--red);font-size:14px;min-height:20px;margin:0 2px 8px}
+[hidden]{display:none!important}
 .foot{font-size:12.5px;color:var(--mute);text-align:center;margin-top:12px}
 </style>
 </head>
@@ -57,7 +62,21 @@ a.join.off{opacity:.38;pointer-events:none}
 <div id="c"></div>
 </main>
 <script>
-const TG_URL='https://t.me/+pMJmfEKVUS44ZmM0';
+/* No invite link in this file: the server returns it only to a signed-in app user
+   who types the right join code (10 wrong codes in 15 min = blocked). */
+const SB='https://fbaccaknjvgeucsxjsbt.supabase.co',KEY='sb_publishable_7rFRtC0xjZGOCNm0DKsgqw_66DyQA_i';
+function tok(){try{return localStorage.getItem('vst_token')}catch(e){return null}}
+async function getLink(){const t=L[lang],msg=document.getElementById('msg'),btn=document.getElementById('join'),code=document.getElementById('code').value.trim();
+ msg.textContent='';if(!code){document.getElementById('code').focus();return}
+ if(!tok()){msg.textContent=t.e_login;return}
+ btn.classList.add('off');
+ try{const r=await fetch(SB+'/rest/v1/rpc/ops_tg_link',{method:'POST',headers:{apikey:KEY,'Content-Type':'application/json'},body:JSON.stringify({p_token:tok(),p_code:code})});
+  const txt=await r.text();let d=null;try{d=JSON.parse(txt)}catch(e){}
+  if(!r.ok){const m=(d&&d.message)||'';msg.textContent=m.includes('ops:auth')?t.e_login:m.includes('ops:locked')?t.e_locked:m.includes('ops:notg')?t.e_notg:t.e_net}
+  else if(!d){msg.textContent=t.e_wrong}
+  else{msg.textContent='';location.href=d;return}}
+ catch(e){msg.textContent=t.e_net}
+ btn.classList.remove('off')}
 const TG_SVG='<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.4 4.3 2.9 11.4c-1.2.5-1.2 1.2-.2 1.5l4.7 1.5 1.8 5.6c.2.6.1.9.8.9.5 0 .7-.2 1-.5l2.3-2.2 4.8 3.5c.9.5 1.5.2 1.7-.8l3.1-14.7c.3-1.3-.5-1.9-1.5-1.4zM8.6 14.1l9.9-6.2c.5-.3.9-.1.5.2l-8.4 7.6-.3 3.6z"/></svg>';
 /* The bot writes its messages in Hebrew; the illustrations show them exactly like that
    and the text explains each label. */
@@ -90,7 +109,7 @@ legend:[['👤','Guest'],['🏠','Apartment'],['#️⃣ הזמנה','Booking num
 rules_h:'Rules',
 rules:['<b>No chatting with the members.</b> Only Reply to request messages or use the buttons.','<b>The guest reads exactly what you write.</b> Write politely and completely, as a final email.','<b>Never write door, key-safe or garage codes</b> – guests receive their access details by email before arrival.','<b>No phone numbers, links or email addresses</b> – Booking.com blocks them.','<b>Check before you tap “Send”.</b> A sent email cannot be taken back.','If you are unsure, do nothing and let the manager decide.'],
 agree:'I have read this. I will only handle guest emails in this group and will not chat with the members.',
-join:'Join the Telegram group',foot:'Illustrations show the format of the bot\'s messages; guest names and texts are examples.',
+join:'Join the Telegram group',codeL:'Join code (you get it from the manager)',e_wrong:'Wrong code.',e_login:'Please sign in to the Vienna Stay Team app first, then open this page again.',e_locked:'Too many wrong codes. Please try again in 15 minutes.',e_notg:'The manager has not set a join code yet.',e_net:'No connection. Please try again.',foot:'Illustrations show the format of the bot\'s messages; guest names and texts are examples.',
 cap:['Illustration','Illustration – tap the green button','Illustration – Reply with your full answer','Illustration – tap Skip','Illustration – marked as handled','Illustration – red reminder']},
 de:{back:'← Zurück zur App',h:'Bevor du beitrittst: die Gästeantwort-Gruppe',
 lead:'Diese Telegram-Gruppe ist die Schaltzentrale unseres E-Mail-Systems. Wenn ein Gast uns schreibt (zum Beispiel über Booking.com), formuliert unser KI-Assistent eine Antwort. <b>Nichts wird an den Gast geschickt, bevor jemand in dieser Gruppe es freigibt.</b> Du entscheidest: die Antwort der KI senden, einen eigenen Text schreiben oder überspringen.',
@@ -107,7 +126,7 @@ legend:[['👤','Gast'],['🏠','Wohnung'],['#️⃣ הזמנה','Buchungsnummer
 rules_h:'Regeln',
 rules:['<b>Nicht mit den Mitgliedern chatten.</b> Nur auf Anfrage-Nachrichten antworten oder die Knöpfe benutzen.','<b>Der Gast liest genau, was du schreibst.</b> Schreibe höflich und vollständig, wie eine fertige E-Mail.','<b>Niemals Tür-, Schlüsselsafe- oder Garagencodes schreiben</b> – Gäste bekommen ihre Zugangsdaten vor der Anreise per E-Mail.','<b>Keine Telefonnummern, Links oder E-Mail-Adressen</b> – Booking.com sperrt sie.','<b>Vor dem Tippen auf „Senden“ prüfen.</b> Eine gesendete E-Mail lässt sich nicht zurückholen.','Wenn du unsicher bist, tu nichts und lass die Leitung entscheiden.'],
 agree:'Ich habe das gelesen. Ich bearbeite in dieser Gruppe nur Gäste-E-Mails und chatte nicht mit den Mitgliedern.',
-join:'Der Telegram-Gruppe beitreten',foot:'Die Abbildungen zeigen das Format der Bot-Nachrichten; Namen und Texte sind Beispiele.',
+join:'Der Telegram-Gruppe beitreten',codeL:'Beitrittscode (bekommst du von der Leitung)',e_wrong:'Falscher Code.',e_login:'Bitte melde dich zuerst in der App Vienna Stay Team an und öffne diese Seite dann erneut.',e_locked:'Zu viele falsche Codes. Bitte versuche es in 15 Minuten erneut.',e_notg:'Die Leitung hat noch keinen Beitrittscode festgelegt.',e_net:'Keine Verbindung. Bitte erneut versuchen.',foot:'Die Abbildungen zeigen das Format der Bot-Nachrichten; Namen und Texte sind Beispiele.',
 cap:['Abbildung','Abbildung – grünen Knopf tippen','Abbildung – mit vollständiger Antwort antworten','Abbildung – Überspringen tippen','Abbildung – als erledigt markiert','Abbildung – rote Erinnerung']}};
 function shot(i,t){
  const req=`<div class="bub"><div class="from">Vienna Stay Bot</div>${REQ}</div>`;
@@ -127,8 +146,9 @@ function r(){const t=L[lang];document.documentElement.lang=lang;
  document.getElementById('c').innerHTML=`<h1>${t.h}</h1><p class="lead">${t.lead}</p><div class="warn">⚠️ ${t.warn}</div>
  <h2>${t.how}</h2>${t.s.map((s,i)=>`<div class="step"><h3><span class="n">${i+1}</span>${s[0]}</h3><p>${s[1]}</p>${s[2]?`<div class="legend">${t.legend.map(([a,b])=>`<b>${a}</b><span>${b}</span>`).join('')}</div><div style="height:12px"></div>`:''}${shot(i,t)}</div>`).join('')}
  <h2>${t.rules_h}</h2><div class="step"><ul class="rules">${t.rules.map(x=>`<li>${x}</li>`).join('')}</ul></div>
- <label class="agree"><input type="checkbox" id="ok" onchange="document.getElementById('join').classList.toggle('off',!this.checked)"><span>${t.agree}</span></label>
- <a class="join off" id="join" href="${TG_URL}" target="_blank" rel="noopener">${TG_SVG}${t.join}</a>
+ <label class="agree"><input type="checkbox" id="ok" onchange="document.getElementById('codeBox').hidden=!this.checked"><span>${t.agree}</span></label>
+ <div id="codeBox" hidden><label class="codel" for="code">${t.codeL}</label><input id="code" class="code" type="text" inputmode="text" autocomplete="off" autocapitalize="none" onkeydown="if(event.key==='Enter')getLink()">
+ <div class="msg" id="msg"></div><a class="join" id="join" href="#" onclick="event.preventDefault();getLink()">${TG_SVG}${t.join}</a></div>
  <div class="foot">${t.foot}</div>`}
 r();
 </script>
