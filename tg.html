@@ -29,16 +29,17 @@ h2{font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--mute
 /* Telegram-style illustration */
 .tgshot{background:var(--tgbg);border-radius:12px;padding:12px;margin-top:4px}
 .cap{font-size:11.5px;color:var(--mute);text-align:center;margin-top:6px}
-.bub{background:#fff;border-radius:12px;padding:9px 11px;font-size:13.5px;line-height:1.5;max-width:94%;box-shadow:0 1px 1px rgba(0,0,0,.08);direction:rtl;text-align:right;white-space:pre-wrap;position:relative}
+.bub{background:#fff;border-radius:12px;padding:9px 11px;font-size:13.5px;line-height:1.5;max-width:94%;box-shadow:0 1px 1px rgba(0,0,0,.08);white-space:pre-wrap;position:relative}
 .bub.mine{background:#e1fec6;margin-inline-start:auto;direction:ltr;text-align:left}
 .bub .q{direction:ltr;text-align:left;display:block}
 .bub .from{font-weight:600;color:var(--tg);font-size:12.5px;margin-bottom:2px;direction:ltr;text-align:left}
 .kb{display:flex;gap:6px;margin-top:6px;max-width:94%}
-.kb span{flex:1;text-align:center;background:rgba(255,255,255,.55);border-radius:9px;padding:8px 4px;font-size:13px;font-weight:600;color:#1b4d6b;direction:rtl}
+.kb span{flex:1;text-align:center;background:rgba(255,255,255,.55);border-radius:9px;padding:8px 4px;font-size:13px;font-weight:600;color:#1b4d6b}
 .kb span.hl{background:#fff;box-shadow:0 0 0 2px var(--tg)}
 .quote{border-inline-start:3px solid var(--tg);padding:2px 8px;margin-bottom:6px;font-size:12px;color:#557;background:rgba(34,158,217,.08);border-radius:4px;direction:ltr;text-align:left}
-.stamp{direction:rtl;font-size:12.5px;color:#2e7d32;font-weight:600}
-.redmsg{background:#fff;border-radius:12px;padding:9px 11px;font-size:13.5px;direction:rtl;text-align:right;white-space:pre-wrap;border:2px solid #e57373;max-width:94%}
+.stamp{font-size:12.5px;color:#2e7d32;font-weight:600}
+.redmsg{background:#fff;border-radius:12px;padding:9px 11px;font-size:13.5px;white-space:pre-wrap;border:2px solid #e57373;max-width:94%}
+.bub.he{direction:rtl;text-align:right}
 .legend{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;font-size:14px;color:var(--ink2);margin:10px 0 0}
 .legend b{font-weight:600;color:var(--ink);direction:rtl}
 ul.rules{margin:0;padding-inline-start:20px}
@@ -80,69 +81,76 @@ async function getLink(){const t=L[lang],msg=document.getElementById('msg'),btn=
 const TG_SVG='<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.4 4.3 2.9 11.4c-1.2.5-1.2 1.2-.2 1.5l4.7 1.5 1.8 5.6c.2.6.1.9.8.9.5 0 .7-.2 1-.5l2.3-2.2 4.8 3.5c.9.5 1.5.2 1.7-.8l3.1-14.7c.3-1.3-.5-1.9-1.5-1.4zM8.6 14.1l9.9-6.2c.5-.3.9-.1.5.2l-8.4 7.6-.3 3.6z"/></svg>';
 /* The bot writes its messages in Hebrew; the illustrations show them exactly like that
    and the text explains each label. */
-const REQ=`🔔 פנייה חדשה — Vienna Stay
+/* The bot writes in German (the original). Translation on request: Reply "übersetzen" / "translate" / "תרגום". */
+const REQ=`🔔 Neue Anfrage — Vienna Stay Apartments
 👤 Anna Müller
 🏠 T13 | Tabor Ocean Blue
-#️⃣ הזמנה 5123456789
+#️⃣ Buchung 5123456789
 📅 14.11 – 17.11
 
-❓ האורח שאל:
-<span class="q">"Hello, is there a hairdryer in the apartment?"</span>
+❓ Der Gast schreibt:
+"Gibt es einen Föhn in der Wohnung?"
 
-✍️ התשובה שהסוכן רוצה לשלוח:
-<span class="q">"Dear Anna, thank you for choosing Vienna Stay! Yes, every apartment has a hairdryer – you will find it in the bathroom. Kind regards"</span>
+✍️ Diese Antwort möchte der Assistent senden:
+"Liebe Anna, vielen Dank, dass Sie sich für Vienna Stay entschieden haben! Ja, in jeder Wohnung gibt es einen Föhn – Sie finden ihn im Badezimmer. Herzliche Grüße, Ihr Vienna Stay Team"
 
-(פנייה #214)`;
+Senden oder überspringen: Knöpfe unten · Ändern: auf diese Nachricht antworten (Reply) mit dem neuen Text
+🌐 Übersetzung: Knopf „Translate“ unten, oder Reply mit „übersetzen“ / „translate“ / „תרגום“
+
+(Anfrage #214)`;
 const L={
 en:{back:'← Back to the app',h:'Before you join: the Guest Reply group',
 lead:'This Telegram group is the control room of our email system. When a guest writes to us (for example through Booking.com), our AI assistant writes a reply. <b>Nothing is sent to the guest until someone in this group approves it.</b> You decide: send the AI\'s answer, write your own wording, or skip.',
 warn:'<b>This is NOT a chat group.</b> Do not write messages to the other members here – no greetings, no questions, no "ok". The group is only for handling guest emails. For everything else, use the team chat in the app.',
 how:'How it works – step by step',
 s:[
-['A new guest email arrives','The bot posts a message with the guest, the apartment, the booking, the guest\'s question and the reply the AI suggests. The bot writes in Hebrew – here is what the labels mean:',true],
-['The answer is good → tap “Send to guest”','Read the suggested reply. If it is correct and polite, tap the button <b>“✅ שלח לאורח”</b> (Send to guest). The email goes to the guest immediately.',false],
-['You want to change it → Reply with your own text','Press and hold the request message, choose <b>Reply</b>, and write the <b>complete</b> answer exactly as the guest should receive it (in English or German). Your text is sent instead of the AI\'s reply – word for word.',false],
-['It should not be answered → tap “Skip”','For spam, messages that need no answer, or something already handled elsewhere, tap <b>“🚫 דלג”</b> (Skip). Nothing is sent.',false],
+['A new guest email arrives','The bot posts a message (in German) with the guest, the apartment, the booking, the guest\'s question in the guest\'s own words, and the reply the AI suggests. The AI writes the reply in the language the guest used.',false],
+['The answer is good → tap “Send to guest”','Read the suggested reply. If it is correct and polite, tap the button <b>“✅ An Gast senden”</b> (Send to guest). The email goes to the guest immediately.',false],
+['You want to change it → Reply with your own text','Press and hold the request message, choose <b>Reply</b>, and write the <b>complete</b> answer exactly as the guest should receive it – in the guest\'s language. Your text is sent instead of the AI\'s reply – word for word.',false],
+['It should not be answered → tap “Skip”','For spam, messages that need no answer, or something already handled elsewhere, tap <b>“🚫 Überspringen”</b> (Skip). Nothing is sent.',false],
 ['Done – everyone sees who handled it','The message is marked with who handled it and when, and the buttons disappear. Only one person needs to act on each request.',false],
-['Nobody reacted? A red reminder','If a request is still open after 15 minutes, the bot posts a red reminder (and again every 30 minutes). Handle it with the buttons on the original message, or with Reply.',false]],
+['Nobody reacted? A red reminder','If a request is still open after 15 minutes, the bot posts a red reminder (and again every 30 minutes). Handle it with the buttons on the original message, or with Reply.',false],
+['Need a translation? Ask the bot','Everything in the group is in German. Tap <b>“🌐 Translate”</b> under the request and pick a language (English, Deutsch, עברית, Русский) . Or Reply with <b>“translate”</b>, <b>“תרגום”</b> or e.g. <b>“translate russian”</b>.<br><br>The translation appears briefly in the group and is <b>deleted automatically</b> as soon as the request is sent or skipped – after 10 minutes at the latest. <b>Nothing is sent to the guest.</b>',false]],
 legend:[['👤','Guest'],['🏠','Apartment'],['#️⃣ הזמנה','Booking number'],['📅','Stay dates'],['❓ האורח שאל','The guest asked'],['✍️ התשובה שהסוכן רוצה לשלוח','The reply the AI wants to send'],['פנייה #','Request number']],
 rules_h:'Rules',
 rules:['<b>No chatting with the members.</b> Only Reply to request messages or use the buttons.','<b>The guest reads exactly what you write.</b> Write politely and completely, as a final email.','<b>Never write door, key-safe or garage codes</b> – guests receive their access details by email before arrival.','<b>No phone numbers, links or email addresses</b> – Booking.com blocks them.','<b>Check before you tap “Send”.</b> A sent email cannot be taken back.','If you are unsure, do nothing and let the manager decide.'],
 agree:'I have read this. I will only handle guest emails in this group and will not chat with the members.',
 join:'Join the Telegram group',codeL:'Join code (you get it from the manager)',e_wrong:'Wrong code.',e_login:'Please sign in to the Vienna Stay Team app first, then open this page again.',e_locked:'Too many wrong codes. Please try again in 15 minutes.',e_notg:'The manager has not set a join code yet.',e_net:'No connection. Please try again.',foot:'Illustrations show the format of the bot\'s messages; guest names and texts are examples.',
-cap:['Illustration','Illustration – tap the green button','Illustration – Reply with your full answer','Illustration – tap Skip','Illustration – marked as handled','Illustration – red reminder']},
+cap:['Illustration','Illustration – tap the green button','Illustration – Reply with your full answer','Illustration – tap Skip','Illustration – marked as handled','Illustration – red reminder','Illustration – “Translate” button → choose a language']},
 de:{back:'← Zurück zur App',h:'Bevor du beitrittst: die Gästeantwort-Gruppe',
 lead:'Diese Telegram-Gruppe ist die Schaltzentrale unseres E-Mail-Systems. Wenn ein Gast uns schreibt (zum Beispiel über Booking.com), formuliert unser KI-Assistent eine Antwort. <b>Nichts wird an den Gast geschickt, bevor jemand in dieser Gruppe es freigibt.</b> Du entscheidest: die Antwort der KI senden, einen eigenen Text schreiben oder überspringen.',
 warn:'<b>Das ist KEINE Chat-Gruppe.</b> Schreibe hier keine Nachrichten an die anderen Mitglieder – keine Grüße, keine Fragen, kein „ok“. Die Gruppe ist nur für Gäste-E-Mails da. Für alles andere nutze den Team-Chat in der App.',
 how:'So funktioniert es – Schritt für Schritt',
 s:[
-['Eine neue Gäste-E-Mail kommt an','Der Bot postet eine Nachricht mit dem Gast, der Wohnung, der Buchung, der Frage des Gastes und der Antwort, die die KI vorschlägt. Der Bot schreibt auf Hebräisch – das bedeuten die Zeichen:',true],
-['Die Antwort passt → „An Gast senden“ tippen','Lies die vorgeschlagene Antwort. Wenn sie richtig und höflich ist, tippe auf <b>„✅ שלח לאורח“</b> (An Gast senden). Die E-Mail geht sofort an den Gast.',false],
-['Du willst etwas ändern → mit eigenem Text antworten','Drücke lange auf die Nachricht, wähle <b>Antworten</b> und schreibe die <b>vollständige</b> Antwort genau so, wie der Gast sie bekommen soll (auf Englisch oder Deutsch). Dein Text wird statt der KI-Antwort geschickt – Wort für Wort.',false],
-['Keine Antwort nötig → „Überspringen“ tippen','Bei Spam, Nachrichten ohne Antwortbedarf oder bereits Erledigtem tippe auf <b>„🚫 דלג“</b> (Überspringen). Es wird nichts gesendet.',false],
+['Eine neue Gäste-E-Mail kommt an','Der Bot postet eine Nachricht (auf Deutsch) mit dem Gast, der Wohnung, der Buchung, der Frage des Gastes in seinen eigenen Worten und der Antwort, die die KI vorschlägt. Die KI schreibt die Antwort in der Sprache des Gastes.',false],
+['Die Antwort passt → „An Gast senden“ tippen','Lies die vorgeschlagene Antwort. Wenn sie richtig und höflich ist, tippe auf <b>„✅ An Gast senden“</b>. Die E-Mail geht sofort an den Gast.',false],
+['Du willst etwas ändern → mit eigenem Text antworten','Drücke lange auf die Nachricht, wähle <b>Antworten</b> und schreibe die <b>vollständige</b> Antwort genau so, wie der Gast sie bekommen soll – in der Sprache des Gastes. Dein Text wird statt der KI-Antwort geschickt – Wort für Wort.',false],
+['Keine Antwort nötig → „Überspringen“ tippen','Bei Spam, Nachrichten ohne Antwortbedarf oder bereits Erledigtem tippe auf <b>„🚫 Überspringen“</b>. Es wird nichts gesendet.',false],
 ['Erledigt – alle sehen, wer es bearbeitet hat','Die Nachricht wird mit Name und Uhrzeit markiert, die Knöpfe verschwinden. Pro Anfrage muss nur eine Person handeln.',false],
-['Niemand hat reagiert? Rote Erinnerung','Ist eine Anfrage nach 15 Minuten noch offen, postet der Bot eine rote Erinnerung (danach alle 30 Minuten). Bearbeite sie mit den Knöpfen der ursprünglichen Nachricht oder mit Antworten.',false]],
+['Niemand hat reagiert? Rote Erinnerung','Ist eine Anfrage nach 15 Minuten noch offen, postet der Bot eine rote Erinnerung (danach alle 30 Minuten). Bearbeite sie mit den Knöpfen der ursprünglichen Nachricht oder mit Antworten.',false],
+['Übersetzung nötig? Frag den Bot','In der Gruppe ist alles auf Deutsch. Tippe unter der Anfrage auf <b>„🌐 Translate“</b> und wähle die Sprache (English, Deutsch, עברית, Русский) . Oder antworte (Reply) mit <b>„translate“</b>, <b>„תרגום“</b> oder z. B. <b>„übersetzen russisch“</b>. <b>An den Gast wird nichts gesendet.</b><br><br>Die Übersetzung erscheint kurz in der Gruppe und wird <b>automatisch gelöscht</b>, sobald die Anfrage gesendet oder übersprungen ist – spätestens nach 10 Minuten.',false]],
 legend:[['👤','Gast'],['🏠','Wohnung'],['#️⃣ הזמנה','Buchungsnummer'],['📅','Aufenthalt'],['❓ האורח שאל','Der Gast fragte'],['✍️ התשובה שהסוכן רוצה לשלוח','Die Antwort, die die KI senden will'],['פנייה #','Anfragenummer']],
 rules_h:'Regeln',
 rules:['<b>Nicht mit den Mitgliedern chatten.</b> Nur auf Anfrage-Nachrichten antworten oder die Knöpfe benutzen.','<b>Der Gast liest genau, was du schreibst.</b> Schreibe höflich und vollständig, wie eine fertige E-Mail.','<b>Niemals Tür-, Schlüsselsafe- oder Garagencodes schreiben</b> – Gäste bekommen ihre Zugangsdaten vor der Anreise per E-Mail.','<b>Keine Telefonnummern, Links oder E-Mail-Adressen</b> – Booking.com sperrt sie.','<b>Vor dem Tippen auf „Senden“ prüfen.</b> Eine gesendete E-Mail lässt sich nicht zurückholen.','Wenn du unsicher bist, tu nichts und lass die Leitung entscheiden.'],
 agree:'Ich habe das gelesen. Ich bearbeite in dieser Gruppe nur Gäste-E-Mails und chatte nicht mit den Mitgliedern.',
 join:'Der Telegram-Gruppe beitreten',codeL:'Beitrittscode (bekommst du von der Leitung)',e_wrong:'Falscher Code.',e_login:'Bitte melde dich zuerst in der App Vienna Stay Team an und öffne diese Seite dann erneut.',e_locked:'Zu viele falsche Codes. Bitte versuche es in 15 Minuten erneut.',e_notg:'Die Leitung hat noch keinen Beitrittscode festgelegt.',e_net:'Keine Verbindung. Bitte erneut versuchen.',foot:'Die Abbildungen zeigen das Format der Bot-Nachrichten; Namen und Texte sind Beispiele.',
-cap:['Abbildung','Abbildung – grünen Knopf tippen','Abbildung – mit vollständiger Antwort antworten','Abbildung – Überspringen tippen','Abbildung – als erledigt markiert','Abbildung – rote Erinnerung']}};
+cap:['Abbildung','Abbildung – grünen Knopf tippen','Abbildung – mit vollständiger Antwort antworten','Abbildung – Überspringen tippen','Abbildung – als erledigt markiert','Abbildung – rote Erinnerung','Abbildung – Knopf „Translate“ → Sprache wählen']}};
 function shot(i,t){
  const req=`<div class="bub"><div class="from">Vienna Stay Bot</div>${REQ}</div>`;
- const kb=(hl)=>`<div class="kb"><span class="${hl==='send'?'hl':''}">✅ שלח לאורח</span><span class="${hl==='skip'?'hl':''}">🚫 דלג</span></div>`;
+ const kb=(hl)=>`<div class="kb"><span class="${hl==='send'?'hl':''}">✅ An Gast senden</span><span class="${hl==='skip'?'hl':''}">🚫 Überspringen</span></div><div class="kb"><span class="${hl==='tr'?'hl':''}">🌐 Translate</span></div>`;
  let h='';
  if(i===0)h=req+kb();
  if(i===1)h=req+kb('send');
- if(i===2)h=`<div class="bub mine"><div class="quote">Vienna Stay Bot · (פנייה #214)</div>Dear Anna, thank you for your message! Yes, there is a hairdryer in the bathroom of every apartment. We wish you a pleasant stay. Kind regards, Vienna Stay</div>`;
+ if(i===2)h=`<div class="bub mine"><div class="quote">Vienna Stay Bot · (Anfrage #214)</div>Liebe Anna, danke für Ihre Nachricht! Ja, in jedem Badezimmer gibt es einen Föhn. Wir wünschen Ihnen einen schönen Aufenthalt. Herzliche Grüße, Ihr Vienna Stay Team</div>`;
  if(i===3)h=req+kb('skip');
- if(i===4)h=`<div class="bub"><div class="from">Vienna Stay Bot</div><span class="stamp">✅ נשלח ע"י Olga · 10:42</span>\n━━━━━━━━━━\n🔔 פנייה חדשה — Vienna Stay\n👤 Anna Müller\n…</div>`;
- if(i===5)h=`<div class="redmsg">🔴🔴 פנייה לא טופלה! 🔴🔴\nAnna Müller מחכה לתשובה כבר 15 דקות.\n(פנייה #214)</div>`;
+ if(i===4)h=`<div class="bub"><div class="from">Vienna Stay Bot</div><span class="stamp">✅ Erledigt — an den Gast gesendet von Olga · 10:42</span>\n━━━━━━━━━━\n🔔 Neue Anfrage — Vienna Stay Apartments\n👤 Anna Müller\n…</div>`;
+ if(i===5)h=`<div class="redmsg">🔴🔴 Anfrage nicht bearbeitet! 🔴🔴\nAnna Müller wartet seit 15 Minuten auf eine Antwort.\nBearbeiten: Knöpfe in der ursprünglichen Nachricht (oben) oder Reply darauf.\n(Anfrage #214)</div>`;
+ if(i===6)h=req.replace(/\n\n✍️[\s\S]*?(\(Anfrage #214\))/,'\n…\n\n$1')+kb('tr')+`<div style="height:8px"></div><div class="bub"><div class="from">Vienna Stay Bot</div>🌐 Translate into…</div><div class="kb"><span>English</span><span>Deutsch</span><span class="hl">עברית</span><span>Русский</span></div><div style="height:8px"></div><div class="bub he"><div class="from" style="direction:ltr;text-align:left">Vienna Stay Bot</div>🌐 Hebrew:\n\n🔔 פנייה חדשה — Vienna Stay Apartments\n👤 Anna Müller\n❓ האורח כותב:\n"יש מייבש שיער בדירה?"\n…</div>`;
  return `<div class="tgshot">${h}</div><div class="cap">${t.cap[i]}</div>`}
-let lang=(navigator.language||'en').slice(0,2)==='de'?'de':'en';
+let lang=(navigator.language||'de').slice(0,2)==='en'?'en':'de';
 function r(){const t=L[lang];document.documentElement.lang=lang;
  document.getElementById('back').textContent=t.back;
- document.getElementById('langs').innerHTML=[['en','English'],['de','Deutsch']].map(([k,n])=>`<button class="${k===lang?'on':''}" onclick="lang='${k}';r()">${n}</button>`).join('');
+ document.getElementById('langs').innerHTML=[['de','Deutsch'],['en','English']].map(([k,n])=>`<button class="${k===lang?'on':''}" onclick="lang='${k}';r()">${n}</button>`).join('');
  document.getElementById('c').innerHTML=`<h1>${t.h}</h1><p class="lead">${t.lead}</p><div class="warn">⚠️ ${t.warn}</div>
  <h2>${t.how}</h2>${t.s.map((s,i)=>`<div class="step"><h3><span class="n">${i+1}</span>${s[0]}</h3><p>${s[1]}</p>${s[2]?`<div class="legend">${t.legend.map(([a,b])=>`<b>${a}</b><span>${b}</span>`).join('')}</div><div style="height:12px"></div>`:''}${shot(i,t)}</div>`).join('')}
  <h2>${t.rules_h}</h2><div class="step"><ul class="rules">${t.rules.map(x=>`<li>${x}</li>`).join('')}</ul></div>
