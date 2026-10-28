@@ -164,6 +164,10 @@ table.r .n{text-align:center;font-variant-numeric:tabular-nums}
 /* ---------- chat: WhatsApp look ---------- */
 .wa{display:flex;flex-direction:column;height:100%;background:var(--wa-bg)}
 .wa-head{background:var(--wa);color:#fff;display:flex;align-items:center;gap:11px;padding:calc(env(safe-area-inset-top) + 8px) 14px 9px;flex-shrink:0}
+.tg-pill{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.16);color:#fff;text-decoration:none;font-size:13px;font-weight:600;padding:7px 11px;border-radius:18px;flex-shrink:0}
+.tg-pill svg{width:16px;height:16px}
+.tg-btn{background:#229ED9;text-decoration:none}
+.tg-btn svg{width:20px;height:20px}
 .wa-av{width:40px;height:40px;border-radius:50%;background:#dfe5e7;color:#54656f;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden}
 .wa-av svg{width:40px;height:40px}
 .wa-head .nm{font-size:16.5px;font-weight:600;line-height:1.2}
@@ -226,11 +230,14 @@ table.r .n{text-align:center;font-variant-numeric:tabular-nums}
 /* The team app's OWN Supabase project — deliberately separate from the booking site. */
 const SB='https://fbaccaknjvgeucsxjsbt.supabase.co';
 const KEY='sb_publishable_7rFRtC0xjZGOCNm0DKsgqw_66DyQA_i';
+/* The team's Telegram group (invite link from Mendy). */
+const TG_URL='https://t.me/+pMJmfEKVUS44ZmM0';
+const TG_SVG='<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.4 4.3 2.9 11.4c-1.2.5-1.2 1.2-.2 1.5l4.7 1.5 1.8 5.6c.2.6.1.9.8.9.5 0 .7-.2 1-.5l2.3-2.2 4.8 3.5c.9.5 1.5.2 1.7-.8l3.1-14.7c.3-1.3-.5-1.9-1.5-1.4zM8.6 14.1l9.9-6.2c.5-.3.9-.1.5.2l-8.4 7.6-.3 3.6z"/></svg>';
 
 /* ---------------- translations ---------------- */
 const LANGS=[['he','עברית'],['de','Deutsch'],['en','English'],['ru','Русский']];
 const T={
-he:{showPw:'הצג סיסמה',hidePw:'הסתר סיסמה',locked:'יותר מדי ניסיונות שגויים. הכניסה נחסמה ל־15 דקות.',stProgress:'בטיפול',markProgress:'סמן שבטיפול',progressNote:'מה מתוכנן? (לא חובה)',progressAt:'סומן בטיפול',progressBy:'מטפל/ת',issueProgress:'תקלה בטיפול',progress:'בטיפול',stOpen:'פתוחה',stDone:'טופלה',firstMgr:'זו הפעם הראשונה: צור כאן את שם המשתמש והסיסמה של המנהל.',repeatPass:'חזור על הסיסמה',mismatch:'הסיסמאות לא זהות',createMgr:'צור מנהל והיכנס',hasMgr:'כבר קיים מנהל — היכנס עם הפרטים שלו',noMgr:'עדיין לא נוצר מנהל',mgrLogin:'שם משתמש וסיסמת מנהל',mgrLoginHint:'שם משתמש וסיסמה למנהל באפליקציה הזו. גם החשבון של הקוקפיט ימשיך לעבוד.',short8:'סיסמה קצרה מדי (לפחות 8 תווים)',app:'Vienna Stay צוות',staff:'עובד',manager:'מנהל',yourName:'השם שלך',password:'סיסמה',username:'שם משתמש',login:'כניסה',logout:'יציאה',
+he:{tgGroup:'קבוצת הטלגרם',tgJoin:'הצטרפות לקבוצת הטלגרם',tgHint:'הקבוצה של הצוות בטלגרם. לחיצה פותחת את טלגרם ומצרפת אותך.',showPw:'הצג סיסמה',hidePw:'הסתר סיסמה',locked:'יותר מדי ניסיונות שגויים. הכניסה נחסמה ל־15 דקות.',stProgress:'בטיפול',markProgress:'סמן שבטיפול',progressNote:'מה מתוכנן? (לא חובה)',progressAt:'סומן בטיפול',progressBy:'מטפל/ת',issueProgress:'תקלה בטיפול',progress:'בטיפול',stOpen:'פתוחה',stDone:'טופלה',firstMgr:'זו הפעם הראשונה: צור כאן את שם המשתמש והסיסמה של המנהל.',repeatPass:'חזור על הסיסמה',mismatch:'הסיסמאות לא זהות',createMgr:'צור מנהל והיכנס',hasMgr:'כבר קיים מנהל — היכנס עם הפרטים שלו',noMgr:'עדיין לא נוצר מנהל',mgrLogin:'שם משתמש וסיסמת מנהל',mgrLoginHint:'שם משתמש וסיסמה למנהל באפליקציה הזו. גם החשבון של הקוקפיט ימשיך לעבוד.',short8:'סיסמה קצרה מדי (לפחות 8 תווים)',app:'Vienna Stay צוות',staff:'עובד',manager:'מנהל',yourName:'השם שלך',password:'סיסמה',username:'שם משתמש',login:'כניסה',logout:'יציאה',
 chat:'צ׳אט',issues:'תקלות',stock:'מחסן',units:'דירות',reports:'דוחות',settings:'הגדרות',
 typeMsg:'כתוב הודעה…',camera:'מצלמה',gallery:'גלריה',send:'שלח',noMsgs:'אין עדיין הודעות. תהיה הראשון!',
 newIssue:'דיווח על תקלה',open:'פתוחות',done:'טופלו',all:'הכל',apartment:'דירה',noApt:'— כללי / לא בדירה —',topic:'נושא',
@@ -253,7 +260,7 @@ mgrAccount:'חשבון המנהל (כמו בקוקפיט)',displayName:'השם �
 kinds:{take:'לקח',break:'שבר',return:'החזיר',add:'הכניס',adjust:'תיקן ספירה'},
 icat:{kitchen:'מטבח',linen:'מצעים ומגבות',consumables:'מתכלים',cleaning:'ניקיון',other:'אחר'},
 pcat:{plumbing:'אינסטלציה / מים',electric:'חשמל ותאורה',heating:'חימום / מזגן',appliances:'מכשירי חשמל',furniture:'ריהוט ונזק',cleaning:'ניקיון',access:'כניסה / מפתחות / קוד',internet:'אינטרנט / טלוויזיה',work:'בעיה בעבודה',other:'אחר'}},
-de:{showPw:'Passwort anzeigen',hidePw:'Passwort verbergen',locked:'Zu viele falsche Versuche. Die Anmeldung ist für 15 Minuten gesperrt.',stProgress:'In Bearbeitung',markProgress:'Als „in Bearbeitung“ markieren',progressNote:'Was ist geplant? (optional)',progressAt:'In Bearbeitung seit',progressBy:'Bearbeitet von',issueProgress:'Problem in Bearbeitung',progress:'In Arbeit',stOpen:'Offen',stDone:'Erledigt',firstMgr:'Zum ersten Mal: Lege hier Benutzername und Passwort des Managers an.',repeatPass:'Passwort wiederholen',mismatch:'Passwörter stimmen nicht überein',createMgr:'Manager anlegen & anmelden',hasMgr:'Es gibt schon einen Manager — bitte anmelden',noMgr:'Noch kein Manager angelegt',mgrLogin:'Manager-Anmeldung',mgrLoginHint:'Benutzername und Passwort für den Manager in dieser App. Das Cockpit-Konto funktioniert weiterhin.',short8:'Passwort zu kurz (min. 8 Zeichen)',app:'Vienna Stay Team',staff:'Mitarbeiter',manager:'Manager',yourName:'Dein Name',password:'Passwort',username:'Benutzername',login:'Anmelden',logout:'Abmelden',
+de:{tgGroup:'Telegram-Gruppe',tgJoin:'Der Telegram-Gruppe beitreten',tgHint:'Die Team-Gruppe auf Telegram. Ein Tippen öffnet Telegram und du trittst bei.',showPw:'Passwort anzeigen',hidePw:'Passwort verbergen',locked:'Zu viele falsche Versuche. Die Anmeldung ist für 15 Minuten gesperrt.',stProgress:'In Bearbeitung',markProgress:'Als „in Bearbeitung“ markieren',progressNote:'Was ist geplant? (optional)',progressAt:'In Bearbeitung seit',progressBy:'Bearbeitet von',issueProgress:'Problem in Bearbeitung',progress:'In Arbeit',stOpen:'Offen',stDone:'Erledigt',firstMgr:'Zum ersten Mal: Lege hier Benutzername und Passwort des Managers an.',repeatPass:'Passwort wiederholen',mismatch:'Passwörter stimmen nicht überein',createMgr:'Manager anlegen & anmelden',hasMgr:'Es gibt schon einen Manager — bitte anmelden',noMgr:'Noch kein Manager angelegt',mgrLogin:'Manager-Anmeldung',mgrLoginHint:'Benutzername und Passwort für den Manager in dieser App. Das Cockpit-Konto funktioniert weiterhin.',short8:'Passwort zu kurz (min. 8 Zeichen)',app:'Vienna Stay Team',staff:'Mitarbeiter',manager:'Manager',yourName:'Dein Name',password:'Passwort',username:'Benutzername',login:'Anmelden',logout:'Abmelden',
 chat:'Chat',issues:'Probleme',stock:'Lager',units:'Wohnungen',reports:'Berichte',settings:'Einstellungen',
 typeMsg:'Nachricht schreiben…',camera:'Kamera',gallery:'Galerie',send:'Senden',noMsgs:'Noch keine Nachrichten.',
 newIssue:'Problem melden',open:'Offen',done:'Erledigt',all:'Alle',apartment:'Wohnung',noApt:'— Allgemein / keine Wohnung —',topic:'Thema',
@@ -276,7 +283,7 @@ mgrAccount:'Manager-Konto (wie im Cockpit)',displayName:'Angezeigter Name',sendi
 kinds:{take:'nahm',break:'kaputt',return:'zurück',add:'eingekauft',adjust:'korrigiert'},
 icat:{kitchen:'Küche',linen:'Bettwäsche & Handtücher',consumables:'Verbrauchsartikel',cleaning:'Reinigung',other:'Sonstiges'},
 pcat:{plumbing:'Sanitär / Wasser',electric:'Strom & Licht',heating:'Heizung / Klima',appliances:'Geräte',furniture:'Möbel & Schäden',cleaning:'Reinigung',access:'Zugang / Schlüssel / Code',internet:'Internet / TV',work:'Problem bei der Arbeit',other:'Sonstiges'}},
-en:{showPw:'Show password',hidePw:'Hide password',locked:'Too many wrong attempts. Sign-in is blocked for 15 minutes.',stProgress:'In progress',markProgress:'Mark as in progress',progressNote:'What is planned? (optional)',progressAt:'In progress since',progressBy:'Handled by',issueProgress:'Issue in progress',progress:'In progress',stOpen:'Open',stDone:'Fixed',firstMgr:'First time: create the manager username and password here.',repeatPass:'Repeat password',mismatch:'Passwords do not match',createMgr:'Create manager & sign in',hasMgr:'A manager already exists — please sign in',noMgr:'No manager created yet',mgrLogin:'Manager sign-in',mgrLoginHint:'Username and password for the manager in this app. The cockpit account keeps working too.',short8:'Password too short (min. 8 characters)',app:'Vienna Stay Team',staff:'Staff',manager:'Manager',yourName:'Your name',password:'Password',username:'Username',login:'Sign in',logout:'Sign out',
+en:{tgGroup:'Telegram group',tgJoin:'Join the Telegram group',tgHint:'The team group on Telegram. One tap opens Telegram and adds you.',showPw:'Show password',hidePw:'Hide password',locked:'Too many wrong attempts. Sign-in is blocked for 15 minutes.',stProgress:'In progress',markProgress:'Mark as in progress',progressNote:'What is planned? (optional)',progressAt:'In progress since',progressBy:'Handled by',issueProgress:'Issue in progress',progress:'In progress',stOpen:'Open',stDone:'Fixed',firstMgr:'First time: create the manager username and password here.',repeatPass:'Repeat password',mismatch:'Passwords do not match',createMgr:'Create manager & sign in',hasMgr:'A manager already exists — please sign in',noMgr:'No manager created yet',mgrLogin:'Manager sign-in',mgrLoginHint:'Username and password for the manager in this app. The cockpit account keeps working too.',short8:'Password too short (min. 8 characters)',app:'Vienna Stay Team',staff:'Staff',manager:'Manager',yourName:'Your name',password:'Password',username:'Username',login:'Sign in',logout:'Sign out',
 chat:'Chat',issues:'Issues',stock:'Storage',units:'Apartments',reports:'Reports',settings:'Settings',
 typeMsg:'Type a message…',camera:'Camera',gallery:'Gallery',send:'Send',noMsgs:'No messages yet.',
 newIssue:'Report a problem',open:'Open',done:'Fixed',all:'All',apartment:'Apartment',noApt:'— General / no apartment —',topic:'Topic',
@@ -299,7 +306,7 @@ mgrAccount:'Manager account (same as the cockpit)',displayName:'Display name',se
 kinds:{take:'took',break:'broke',return:'returned',add:'added',adjust:'recounted'},
 icat:{kitchen:'Kitchen',linen:'Linen & towels',consumables:'Consumables',cleaning:'Cleaning',other:'Other'},
 pcat:{plumbing:'Plumbing / water',electric:'Electric & lights',heating:'Heating / AC',appliances:'Appliances',furniture:'Furniture & damage',cleaning:'Cleaning',access:'Access / keys / code',internet:'Internet / TV',work:'Work problem',other:'Other'}},
-ru:{showPw:'Показать пароль',hidePw:'Скрыть пароль',locked:'Слишком много неверных попыток. Вход заблокирован на 15 минут.',stProgress:'В работе',markProgress:'Отметить «в работе»',progressNote:'Что планируется? (необязательно)',progressAt:'В работе с',progressBy:'Занимается',issueProgress:'Проблема в работе',progress:'В работе',stOpen:'Открыта',stDone:'Решена',firstMgr:'Первый запуск: создайте здесь логин и пароль менеджера.',repeatPass:'Повторите пароль',mismatch:'Пароли не совпадают',createMgr:'Создать менеджера и войти',hasMgr:'Менеджер уже существует — войдите',noMgr:'Менеджер ещё не создан',mgrLogin:'Вход менеджера',mgrLoginHint:'Логин и пароль менеджера для этого приложения. Аккаунт кокпита тоже продолжит работать.',short8:'Слишком короткий пароль (мин. 8 символов)',app:'Vienna Stay Команда',staff:'Сотрудник',manager:'Менеджер',yourName:'Ваше имя',password:'Пароль',username:'Логин',login:'Войти',logout:'Выйти',
+ru:{tgGroup:'Группа в Telegram',tgJoin:'Вступить в группу Telegram',tgHint:'Группа команды в Telegram. Нажмите — откроется Telegram, и вы вступите.',showPw:'Показать пароль',hidePw:'Скрыть пароль',locked:'Слишком много неверных попыток. Вход заблокирован на 15 минут.',stProgress:'В работе',markProgress:'Отметить «в работе»',progressNote:'Что планируется? (необязательно)',progressAt:'В работе с',progressBy:'Занимается',issueProgress:'Проблема в работе',progress:'В работе',stOpen:'Открыта',stDone:'Решена',firstMgr:'Первый запуск: создайте здесь логин и пароль менеджера.',repeatPass:'Повторите пароль',mismatch:'Пароли не совпадают',createMgr:'Создать менеджера и войти',hasMgr:'Менеджер уже существует — войдите',noMgr:'Менеджер ещё не создан',mgrLogin:'Вход менеджера',mgrLoginHint:'Логин и пароль менеджера для этого приложения. Аккаунт кокпита тоже продолжит работать.',short8:'Слишком короткий пароль (мин. 8 символов)',app:'Vienna Stay Команда',staff:'Сотрудник',manager:'Менеджер',yourName:'Ваше имя',password:'Пароль',username:'Логин',login:'Войти',logout:'Выйти',
 chat:'Чат',issues:'Проблемы',stock:'Склад',units:'Квартиры',reports:'Отчёты',settings:'Настройки',
 typeMsg:'Сообщение…',camera:'Камера',gallery:'Галерея',send:'Отправить',noMsgs:'Сообщений пока нет.',
 newIssue:'Сообщить о проблеме',open:'Открытые',done:'Решённые',all:'Все',apartment:'Квартира',noApt:'— Общее / без квартиры —',topic:'Тема',
@@ -556,7 +563,7 @@ function loginView(){const st=S.loginMode==='staff';return `<main style="padding
 function chatView(){
  const names=[...new Set(S.msgs.slice().reverse().map(m=>m.by_name))].slice(0,6);
  return `<div class="wa">
- <div class="wa-head"><div class="wa-av">${GROUP_AV}</div><div class="grow"><div class="nm">Vienna Stay Team</div><div class="sub">${esc(names.join(', ')||S.me.name)}</div></div></div>
+ <div class="wa-head"><div class="wa-av">${GROUP_AV}</div><div class="grow"><div class="nm">Vienna Stay Team</div><div class="sub">${esc(names.join(', ')||S.me.name)}</div></div><a class="tg-pill" href="${TG_URL}" target="_blank" rel="noopener" aria-label="${esc(t('tgJoin'))}">${TG_SVG}<span>Telegram</span></a></div>
  <div id="msgs"></div>
  <div id="chatPrev"></div>
  <div class="wa-bar">
@@ -757,7 +764,8 @@ function downloadCsv(){const q=v=>'"'+String(v??'').replace(/"/g,'""')+'"';
  a.href=URL.createObjectURL(blob);a.download=`vienna-stay-report_${S.rFrom}_${S.rTo}.csv`;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500)}
 
 /* ---------------- settings ---------------- */
-function settingsView(){const mgr=S.me.role==='manager';return `<div class="sec">${ic('globe','s')}${esc(t('language'))}</div><div class="group" style="padding:10px">${langBar()}</div>
+function settingsView(){const mgr=S.me.role==='manager';return `<div class="sec">${ic('chat','s')}${esc(t('tgGroup'))}</div><div class="card"><div class="mute" style="margin-bottom:12px">${esc(t('tgHint'))}</div><a class="btn block tg-btn" href="${TG_URL}" target="_blank" rel="noopener">${TG_SVG}${esc(t('tgJoin'))}</a></div>
+ <div class="sec">${ic('globe','s')}${esc(t('language'))}</div><div class="group" style="padding:10px">${langBar()}</div>
  ${mgr?`<div class="sec">${ic('key','s')}${esc(t('staffPass'))}</div><div class="card">${S.me.has_pass?'':`<div class="err" style="margin:0 0 10px">${esc(t('noPassYet'))}</div>`}
   <div class="mute">${esc(t('staffPassHint'))}</div>
   <label class="f">${esc(t('newPass'))}</label><input class="inp" id="spPass" type="text" autocomplete="off" autocapitalize="none">
@@ -769,7 +777,7 @@ function settingsView(){const mgr=S.me.role==='manager';return `<div class="sec"
   <div id="mlMsg"></div><button class="btn block" style="margin-top:14px" onclick="setMgrLogin()">${esc(t('save'))}</button></div>`:''}
  ${NATIVE?'':`<div class="sec">${ic('phone','s')}${esc(t('install'))}</div><div class="card mute" style="line-height:1.55">${esc(t('installHint'))}</div>`}
  <button class="btn danger block" style="margin-top:18px" onclick="logout()">${ic('logout','s flip')}${esc(t('logout'))}</button>
- <p class="mute" style="text-align:center;margin-top:22px;font-size:12px;letter-spacing:.08em">VIENNA STAY TEAM · V6</p>`}
+ <p class="mute" style="text-align:center;margin-top:22px;font-size:12px;letter-spacing:.08em">VIENNA STAY TEAM · V7</p>`}
 async function setMgrLogin(){const u=$('#mlUser').value.trim(),p=$('#mlPass').value;
  try{await api('ops_set_manager_login',{p_user:u,p_pass:p});S.me.mgr_user=u.toLowerCase();$('#mlPass').value='';$('#mlMsg').innerHTML=`<div class="okmsg">${esc(t('saved'))}</div>`}
  catch(e){$('#mlMsg').innerHTML=`<div class="err">${esc(e.message)}</div>`}}
