@@ -38,6 +38,9 @@ svg.ic.f{fill:currentColor;stroke:none}
 .top .who{font-size:12.5px;color:var(--mute);padding-bottom:4px;text-align:end;line-height:1.3}
 .top .who b{display:block;color:var(--ink2);font-weight:600}
 main{flex:1;overflow-y:auto;padding:4px 16px 96px;-webkit-overflow-scrolling:touch}
+/* מקלדת פתוחה בטלפון: האפליקציה מתכווצת לשטח הגלוי, ושורת הלשוניות מוסתרת — כך תיבת הכתיבה לא נעלמת מתחת למקלדת */
+html.kb nav.tabs,html.kb .fab{display:none}
+html.kb main{padding-bottom:16px}
 nav.tabs{display:flex;background:rgba(255,255,255,.86);backdrop-filter:saturate(1.6) blur(18px);-webkit-backdrop-filter:saturate(1.6) blur(18px);
  border-top:1px solid var(--line);padding:6px 4px env(safe-area-inset-bottom);flex-shrink:0}
 nav.tabs button{flex:1;padding:4px 2px 6px;font-size:10.5px;color:var(--mute);display:flex;flex-direction:column;align-items:center;gap:3px;position:relative;font-weight:500;letter-spacing:.01em}
@@ -795,6 +798,20 @@ async function setStaffPass(){const p=$('#spPass').value.trim();
 /* ---------------- start ---------------- */
 if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
 render();boot();
+
+/* המקלדת בטלפון מכסה את תחתית המסך בלי לכווץ אותו (iOS, ואנדרואיד במסך מלא).
+   מתאימים את גובה האפליקציה לחלק הגלוי, כדי שתיבת הכתיבה תמיד תישאר מעל המקלדת. */
+(function(){const vv=window.visualViewport;if(!vv)return;
+ const fit=()=>{const app=document.getElementById('app');if(!app)return;
+  const kb=window.innerHeight-vv.height>120;
+  document.documentElement.classList.toggle('kb',kb);
+  app.style.height=kb?vv.height+'px':'';
+  app.style.transform=kb&&vv.offsetTop?`translateY(${vv.offsetTop}px)`:'';
+  const a=document.activeElement;
+  if(kb&&a&&a.id==='chatIn'){const m=document.getElementById('msgs');if(m)m.scrollTop=m.scrollHeight}};
+ vv.addEventListener('resize',fit);vv.addEventListener('scroll',fit);
+ document.addEventListener('focusin',()=>setTimeout(fit,60));document.addEventListener('focusout',()=>setTimeout(fit,60));
+})();
 </script>
 </body>
 </html>
